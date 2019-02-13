@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="如何在react框架下实现一个hashrouterlink12345678910111213141516&amp;lt;HashRouter&amp;gt;  //错误 HashRouter不能包含多个Route子节点    &amp;lt;Route path=&quot;/about&quot;&amp;gt;&amp;lt;/Route&amp;gt;    &amp;lt;Route path=&quot;/topic&quot;&amp;gt;&amp;lt;/Route&amp;gt;&amp;lt;/Hash">
+<meta name="keywords" content="前端框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="reactnote">
+<meta property="og:url" content="http://yoursite.com/2018/10/14/reactnote/index.html">
+<meta property="og:site_name" content="卡牌大叔的博客">
+<meta property="og:description" content="如何在react框架下实现一个hashrouterlink12345678910111213141516&amp;lt;HashRouter&amp;gt;  //错误 HashRouter不能包含多个Route子节点    &amp;lt;Route path=&quot;/about&quot;&amp;gt;&amp;lt;/Route&amp;gt;    &amp;lt;Route path=&quot;/topic&quot;&amp;gt;&amp;lt;/Route&amp;gt;&amp;lt;/Hash">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-02-13T17:26:22.785Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="reactnote">
+<meta name="twitter:description" content="如何在react框架下实现一个hashrouterlink12345678910111213141516&amp;lt;HashRouter&amp;gt;  //错误 HashRouter不能包含多个Route子节点    &amp;lt;Route path=&quot;/about&quot;&amp;gt;&amp;lt;/Route&amp;gt;    &amp;lt;Route path=&quot;/topic&quot;&amp;gt;&amp;lt;/Route&amp;gt;&amp;lt;/Hash">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="卡牌大叔的博客" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/14/reactnote/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>reactnote | 卡牌大叔的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">卡牌大叔的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/14/reactnote/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="卡牌大叔">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="卡牌大叔的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">reactnote
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-10-14 01:19:06" itemprop="dateCreated datePublished" datetime="2018-10-14T01:19:06+08:00">2018-10-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-02-14 01:26:22" itemprop="dateModified" datetime="2019-02-14T01:26:22+08:00">2019-02-14</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="如何在react框架下实现一个hashrouter"><a href="#如何在react框架下实现一个hashrouter" class="headerlink" title="如何在react框架下实现一个hashrouter"></a>如何在react框架下实现一个hashrouter</h2><p><a href="https://segmentfault.com/a/1190000014313428" target="_blank" rel="noopener">link</a><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">HashRouter</span>&gt;</span>  //错误 HashRouter不能包含多个Route子节点</span><br><span class="line">    <span class="tag">&lt;<span class="name">Route</span> <span class="attr">path</span>=<span class="string">"/about"</span>&gt;</span><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Route</span> <span class="attr">path</span>=<span class="string">"/topic"</span>&gt;</span><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">HashRouter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">Router</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">Route</span> <span class="attr">exact</span> <span class="attr">path</span>=<span class="string">"/"</span> <span class="attr">component</span>=<span class="string">&#123;Home&#125;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Route</span> <span class="attr">path</span>=<span class="string">"/about"</span> <span class="attr">component</span>=<span class="string">&#123;About&#125;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Router</span>&gt;</span></span><br><span class="line">function Home() &#123;</span><br><span class="line">  return (</span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Home<span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">&#123;...&#125;</span>&gt;</span>&#123;l&#125;<span class="tag">&lt;/<span class="name">Link</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<h2 id="react-router4-0-简单介绍"><a href="#react-router4-0-简单介绍" class="headerlink" title="react-router4.0 简单介绍"></a>react-router4.0 简单介绍</h2><p>已经不需要配置路由，一切皆组件。</p>
+<ul>
+<li>react-router:提供了一些router的核心api,包括Router,Route,Switch等</li>
+<li>react-router-dom:提供了BrowserRouter, HashRouter,Route,Link,NavLink</li>
+</ul>
+<p>react-router-dom核心用法</p>
+<ul>
+<li>HashRouter 和BrowserRouter</li>
+<li>Route: path   exact    component  render</li>
+<li>NavLink    Link</li>
+<li>Switch</li>
+<li>Redirect </li>
+</ul>
+<hr>
+<h2 id="jsx如何注释？"><a href="#jsx如何注释？" class="headerlink" title="jsx如何注释？"></a>jsx如何注释？</h2><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123; /*</span><br><span class="line">    <span class="tag">&lt;<span class="name">Menu</span> <span class="attr">theme</span>=<span class="string">"dark"</span>&gt;</span></span><br><span class="line">    &lt;SubMenu key="sub4" title=&#123;&lt;span&gt;&lt;Icon type="setting" /&gt;</span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span>&gt;</span>Navigation Three<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span>&#125;&gt;</span><br><span class="line">    <span class="tag">&lt;<span class="name">Menu.Item</span> <span class="attr">key</span>=<span class="string">"1"</span>&gt;</span>Option 9<span class="tag">&lt;/<span class="name">Menu.Item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Menu.Item</span> <span class="attr">key</span>=<span class="string">"2"</span>&gt;</span>Option 10<span class="tag">&lt;/<span class="name">Menu.Item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Menu.Item</span> <span class="attr">key</span>=<span class="string">"3"</span>&gt;</span>Option 11<span class="tag">&lt;/<span class="name">Menu.Item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Menu.Item</span> <span class="attr">key</span>=<span class="string">"4"</span>&gt;</span>Option 12<span class="tag">&lt;/<span class="name">Menu.Item</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">SubMenu</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">Menu</span>&gt;</span></span><br><span class="line">*/ &#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="ant-Desigin的-一些优化方案-link"><a href="#ant-Desigin的-一些优化方案-link" class="headerlink" title="ant Desigin的 一些优化方案 link"></a>ant Desigin的 一些优化方案 <a href="https://ant.design/docs/react/use-with-create-react-app-cn" target="_blank" rel="noopener">link</a></h2><p>yarn add  –save-dev less less-loadr<br>yarn add  –save-dev axios react-router</p>
+<hr>
+<h2 id="初识React"><a href="#初识React" class="headerlink" title="初识React"></a>初识React</h2><p><strong>如何在React项目中使用less?</strong><br><a href="https://www.jianshu.com/p/51ff1c8be301" target="_blank" rel="noopener">link</a><br><strong>npm run eject报错。如何解决?</strong><br>git add .然后git commit -m “init”  然后再npm run eject<br>React里，jsx所有的变量，表达式都在一个大括号{    }里做的。<br>相比之下，Vue比较混乱。 </p>
+<hr>
+<p><strong>创建react项目</strong></p>
+<ol>
+<li>VSCode编辑器中使用快捷键ctrl+`打开终端 </li>
+<li>在终端输入create-react-app demo，自动创建名称为demo的项目 </li>
+<li>cd demo进入demo项目中 </li>
+<li>yarn start或yarn build运行项目</li>
+<li>此时，一个React项目就搭建成功。使用VScode搭建React要简单很多，配置信息都可以省去。直接开始编写组件就可以</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端框架/" rel="tag"># 前端框架</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/24/vuenote/" rel="next" title="Vue笔记">
+                <i class="fa fa-chevron-left"></i> Vue笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">卡牌大叔</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/tedQB" title="GitHub &rarr; https://github.com/tedQB" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/5462608131" title="Weibo &rarr; https://weibo.com/u/5462608131" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/kapaidashu" title="Twitter &rarr; https://twitter.com/kapaidashu" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何在react框架下实现一个hashrouter"><span class="nav-number">1.</span> <span class="nav-text">如何在react框架下实现一个hashrouter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react-router4-0-简单介绍"><span class="nav-number">2.</span> <span class="nav-text">react-router4.0 简单介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsx如何注释？"><span class="nav-number">3.</span> <span class="nav-text">jsx如何注释？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ant-Desigin的-一些优化方案-link"><span class="nav-number">4.</span> <span class="nav-text">ant Desigin的 一些优化方案 link</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初识React"><span class="nav-number">5.</span> <span class="nav-text">初识React</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">卡牌大叔</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.0.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
