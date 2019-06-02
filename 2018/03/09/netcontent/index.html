@@ -107,14 +107,14 @@
 <meta property="og:site_name" content="卡牌大叔的博客">
 <meta property="og:description" content="TCP报文 1TCP头部重要字段  Sequence number 此序号保证了TCP传输的报文都是有序的，对端可以通过序号顺序拼接报文 Acknowledgement Number 此序号标识数据接收期望接收的下一个字节的编号是多少，同时也标识上一个序号的数据已经收到 Window Size 窗口大小，标识还能接收多少字节的数据，用于流量控制 标识符 RUG=1 该字段表示 数据部分包含紧急">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/public/images/tcp.png">
-<meta property="og:image" content="http://yoursite.com/public/images/tcpthreehandshake.png">
-<meta property="og:image" content="http://yoursite.com/public/images/udp.png">
-<meta property="og:updated_time" content="2019-03-09T12:40:07.080Z">
+<meta property="og:image" content="http://yoursite.com/images/tcp.png">
+<meta property="og:image" content="http://yoursite.com/images/tcpthreehandshake.png">
+<meta property="og:image" content="http://yoursite.com/images/udp.png">
+<meta property="og:updated_time" content="2019-06-02T14:01:29.742Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="网络">
 <meta name="twitter:description" content="TCP报文 1TCP头部重要字段  Sequence number 此序号保证了TCP传输的报文都是有序的，对端可以通过序号顺序拼接报文 Acknowledgement Number 此序号标识数据接收期望接收的下一个字节的编号是多少，同时也标识上一个序号的数据已经收到 Window Size 窗口大小，标识还能接收多少字节的数据，用于流量控制 标识符 RUG=1 该字段表示 数据部分包含紧急">
-<meta name="twitter:image" content="http://yoursite.com/public/images/tcp.png">
+<meta name="twitter:image" content="http://yoursite.com/images/tcp.png">
 
 
 
@@ -358,7 +358,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-03-09 20:40:07" itemprop="dateModified" datetime="2019-03-09T20:40:07+08:00">2019-03-09</time>
+                <time title="Modified: 2019-06-02 22:01:29" itemprop="dateModified" datetime="2019-06-02T22:01:29+08:00">2019-06-02</time>
               
             
           </span>
@@ -392,7 +392,7 @@
       
 
       
-        <h2 id="TCP报文"><a href="#TCP报文" class="headerlink" title="TCP报文"></a>TCP报文</h2><p><img src="/public/images/tcp.png"></p>
+        <h2 id="TCP报文"><a href="#TCP报文" class="headerlink" title="TCP报文"></a>TCP报文</h2><p><img src="/images/tcp.png"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TCP头部重要字段</span><br></pre></td></tr></table></figure>
 <ul>
 <li><code>Sequence number</code> 此序号保证了TCP传输的报文都是有序的，对端可以通过序号顺序拼接报文</li>
@@ -408,7 +408,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="TCP建立连接三次握手"><a href="#TCP建立连接三次握手" class="headerlink" title="TCP建立连接三次握手"></a>TCP建立连接三次握手</h2><p><img src="/public/images/tcpthreehandshake.png"></p>
+<h2 id="TCP建立连接三次握手"><a href="#TCP建立连接三次握手" class="headerlink" title="TCP建立连接三次握手"></a>TCP建立连接三次握手</h2><p><img src="/images/tcpthreehandshake.png"></p>
 <ul>
 <li>不管是客户端还是服务端，TCP连接建立后都能发送数据和接收数据，所以TCP是一个全双工协议</li>
 <li>期初两端都是<code>closed</code>状态，通信开始，双方都会创建<code>TCB</code>。服务器创建完<code>TCB</code>都进入LISTEN状态，等待客户端发送数据</li>
@@ -441,7 +441,7 @@
 <li>不判断网络环境，<code>UDP</code> 无阻塞控制，一直以恒定速度发送数据，不会对发送速率进行调整。弊端是网络条件不好的情况下可能会导致丢包。 对实时性要求高的场景就需要使用UDP而不是TCP</li>
 </ul>
 </li>
-<li><p>高效<br> <img src="/public/images/udp.png"></p>
+<li><p>高效<br> <img src="/images/udp.png"></p>
 <ul>
 <li><code>UDP</code> 头部开销小，只有8个字节，TCP二十个字节</li>
 <li>不可靠，不复杂，需要保证数据不丢失有序到达</li>
