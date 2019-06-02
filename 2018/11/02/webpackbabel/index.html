@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="babel 基础link babel-core是作为babel的核心存在,负责转义ast,import {tranform, transformFile, transformFileSync, transformFromAst }  from ‘babel-core’ babel-clibabel-cli是一个通过命令行对js文件进行换码的工具。babel script.js babel-node">
+<meta name="keywords" content="基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack&#x2F;babel笔记">
+<meta property="og:url" content="http://yoursite.com/2018/11/02/webpackbabel/index.html">
+<meta property="og:site_name" content="卡牌大叔的博客">
+<meta property="og:description" content="babel 基础link babel-core是作为babel的核心存在,负责转义ast,import {tranform, transformFile, transformFileSync, transformFromAst }  from ‘babel-core’ babel-clibabel-cli是一个通过命令行对js文件进行换码的工具。babel script.js babel-node">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-06-02T15:22:08.787Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack&#x2F;babel笔记">
+<meta name="twitter:description" content="babel 基础link babel-core是作为babel的核心存在,负责转义ast,import {tranform, transformFile, transformFileSync, transformFromAst }  from ‘babel-core’ babel-clibabel-cli是一个通过命令行对js文件进行换码的工具。babel script.js babel-node">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="卡牌大叔的博客" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/02/webpackbabel/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>webpack/babel笔记 | 卡牌大叔的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">卡牌大叔的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/02/webpackbabel/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="卡牌大叔">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="卡牌大叔的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">webpack/babel笔记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-11-02 22:26:17" itemprop="dateCreated datePublished" datetime="2018-11-02T22:26:17+08:00">2018-11-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-02 23:22:08" itemprop="dateModified" datetime="2019-06-02T23:22:08+08:00">2019-06-02</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="babel-基础"><a href="#babel-基础" class="headerlink" title="babel 基础"></a>babel 基础</h2><p><a href="https://segmentfault.com/a/1190000011665642" target="_blank" rel="noopener">link</a></p>
+<h2 id="babel-core"><a href="#babel-core" class="headerlink" title="babel-core"></a>babel-core</h2><p>是作为babel的核心存在,负责转义ast,<br>import {tranform, transformFile, transformFileSync, transformFromAst }  from ‘babel-core’</p>
+<h2 id="babel-cli"><a href="#babel-cli" class="headerlink" title="babel-cli"></a>babel-cli</h2><p>babel-cli是一个通过命令行对js文件进行换码的工具。<br>babel script.js</p>
+<h2 id="babel-node"><a href="#babel-node" class="headerlink" title="babel-node"></a>babel-node</h2><p>这是一个支持ES6的js执行环境。</p>
+<h2 id="babel-register"><a href="#babel-register" class="headerlink" title="babel-register"></a>babel-register</h2><p>底层改写了node的require方法，引入babel-register之后所有require并以.es6, .es, .jsx 和 .js为后缀的模块都会经过babel的转译。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//test.js</span></span><br><span class="line"><span class="keyword">const</span> name = <span class="string">'shenfq'</span>;</span><br><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> json = &#123;name&#125;;</span><br><span class="line">    <span class="keyword">return</span> json;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//main.js</span></span><br><span class="line"><span class="built_in">require</span>(<span class="string">'babel-register'</span>);</span><br><span class="line"><span class="keyword">var</span> test = <span class="built_in">require</span>(<span class="string">'./test.js'</span>);  <span class="comment">//test.js中的es6语法将被转译成es5</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(test.toString()); <span class="comment">//通过toString方法，看看控制台输出的函数是否被转译</span></span><br></pre></td></tr></table></figure>
+<h3 id="babel-polyfill"><a href="#babel-polyfill" class="headerlink" title="babel-polyfill"></a>babel-polyfill</h3><p>polyfill在代码中的作用主要是用已经存在的语法和api实现一些浏览器还没有实现的api，对浏览器的一些缺陷做一些修补。例如Array新增了includes方法，箭头函数、解构赋值、class、Promise<br>.babelrc  babel run command缩写</p>
+<p>官方唯一推荐preset：babel-preset-env。</p>
+<h2 id="webpack-大致运行流程"><a href="#webpack-大致运行流程" class="headerlink" title="webpack 大致运行流程"></a>webpack 大致运行流程</h2><ol>
+<li>获取配置参数 webpack.config.js </li>
+<li>实例化Compiler, 通过run方法开启编译   //Compiler类，</li>
+<li>根据入口文件, 创建依赖项, 并递归获取所有模块的依赖模块 //</li>
+<li>通过loader去解析匹配到的模块  </li>
+<li>获取模板, 把解析好的数据套进不同的模板 // 切割模块儿模板，</li>
+<li>输出文件到指定路径 </li>
+</ol>
+<h2 id="如何编写一个Loader"><a href="#如何编写一个Loader" class="headerlink" title="如何编写一个Loader"></a>如何编写一个Loader</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stylus-loader</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> stylus = <span class="built_in">require</span>(<span class="string">'stylus'</span>)</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loader</span> (<span class="params">source</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> css = <span class="string">''</span></span><br><span class="line">    stylus.render(source, (err, data) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (!err) &#123;</span><br><span class="line">            css = data</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(error)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> css</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = loader</span><br><span class="line"></span><br><span class="line"><span class="comment">// style-loader</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">loader</span> (<span class="params">source</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> script = <span class="string">`</span></span><br><span class="line"><span class="string">        let style = document.createElement('style')</span></span><br><span class="line"><span class="string">        style.innerHTML = <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(source)&#125;</span></span></span><br><span class="line"><span class="string">        document.body.appendChild(style)</span></span><br><span class="line"><span class="string">    `</span></span><br><span class="line">    <span class="keyword">return</span> script</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">module</span>.exports = loader</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用：</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>)</span><br><span class="line"><span class="keyword">const</span> root = path.join(__dirname, <span class="string">'./'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> config = &#123;</span><br><span class="line">    mode : <span class="string">'development'</span>,</span><br><span class="line">    entry : path.join(root, <span class="string">'src/app.js'</span>),</span><br><span class="line">    output : &#123;</span><br><span class="line">        path : path.join(root, <span class="string">'dist'</span>),</span><br><span class="line">        filename : <span class="string">'bundle.js'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="built_in">module</span> : &#123;</span><br><span class="line">        rules : [</span><br><span class="line">            &#123;</span><br><span class="line">                test : <span class="regexp">/\.styl(us)?$/</span>,</span><br><span class="line">                use : [  <span class="comment">//root, loaders 路径名称</span></span><br><span class="line">                    path.join(root, <span class="string">'loaders'</span>, <span class="string">'style-loader.js'</span>),</span><br><span class="line">                    path.join(root, <span class="string">'loaders'</span>, <span class="string">'stylus-loader.js'</span>)</span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = config</span><br><span class="line"></span><br><span class="line"><span class="comment">// app.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> name = <span class="built_in">require</span>(<span class="string">'./js/moduleA.js'</span>)</span><br><span class="line"><span class="built_in">require</span>(<span class="string">'./style/init.styl'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> oH1 = <span class="built_in">document</span>.createElement(<span class="string">'h1'</span>)</span><br><span class="line">oH1.innerHTML = <span class="string">'Hello '</span> + name</span><br><span class="line"><span class="built_in">document</span>.body.appendChild(oH1)</span><br></pre></td></tr></table></figure>
+<h2 id="如何写一个webpack插件"><a href="#如何写一个webpack插件" class="headerlink" title="如何写一个webpack插件"></a>如何写一个webpack插件</h2><p>1、一个 js 命名函数。<br>2、在原型链上存在一个 apply 方法。<br>3、为该插件指定一个 Webpack 的事件钩子函数。<br>4、使用 Webpack 内部的实例对象（Compiler 或者 Compilation）具有的属性或者方法。<br>5、当功能完成以后，需要执行 Webpack 的回调函数。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myExampleWebpackPlugin</span>(<span class="params"> </span>)</span>&#123;  &#125;</span><br><span class="line">myExampleWebpackPlugin.prototype.apply = <span class="function"><span class="keyword">function</span>(<span class="params">Compiler</span>)</span>&#123; </span><br><span class="line">    Compiler.plugin(‘compilation’,<span class="function"><span class="keyword">function</span>(<span class="params">compilation,callback</span>)</span>&#123; </span><br><span class="line">        <span class="built_in">console</span>.log(‘<span class="keyword">this</span> is an example plugin’);</span><br><span class="line">        callback( ); </span><br><span class="line">     &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="string">`</span></span><br></pre></td></tr></table></figure></p>
+<p>Compiler 对象： Compiler 对象代表了 Webpack 完整的可配置的环境。<br>该对象在 Webpack 启动的时候会被创建，同时该对象也会被传入一些可控的配置，如 Options、Loaders、Plugins。<br>当插件被实例化的时候，会收到一个 Compiler 对象，通过这个对象可以访问 Webpack 的内部环境。</p>
+<p>Compilation 对象： Compilation 对象在每次文件变化的时候都会被创建，因此会重新产生新的打包资源。<br>该对象表示本次打包的模块、编译的资源、文件改变和监听的依赖文件的状态。</p>
+<h2 id="如何手写一个简单的webpack"><a href="#如何手写一个简单的webpack" class="headerlink" title="如何手写一个简单的webpack"></a>如何手写一个简单的webpack</h2><p><a href="https://juejin.im/post/5ccfe03f51882541e37e6959" target="_blank" rel="noopener">link</a></p>
+<h2 id="clean-webpack-plugin"><a href="#clean-webpack-plugin" class="headerlink" title="clean-webpack-plugin"></a>clean-webpack-plugin</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> CleanWebpackPlugin = <span class="built_in">require</span>(<span class="string">'clean-webpack-plugin’); 不必每一次都有手动清除dist,自动清除。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">purifycss-webpack   css优化去重去无效代码</span></span><br><span class="line"><span class="string">css打包优化去重去无效代码 https://blog.csdn.net/zhoulucky1993/article/details/85228990</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">const PurifyCSS = require("purifycss-webpack");</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">new PurifyCSS(&#123;</span></span><br><span class="line"><span class="string">    paths: glob.sync([</span></span><br><span class="line"><span class="string">        // 要做CSS Tree Shaking的路径文件</span></span><br><span class="line"><span class="string">        path.join(__dirname, ".html"),</span></span><br><span class="line"><span class="string">        path.join(__dirname, "src/*.js")</span></span><br><span class="line"><span class="string">    ])</span></span><br><span class="line"><span class="string">&#125;)</span></span><br></pre></td></tr></table></figure>
+<h3 id="extract-text-webpack-plugin"><a href="#extract-text-webpack-plugin" class="headerlink" title="extract-text-webpack-plugin"></a>extract-text-webpack-plugin</h3><p>该插件的主要是为了抽离css样式,防止将样式打包在js中引起页面样式加载错乱的现象。</p>
+<h2 id="glob-all-glob"><a href="#glob-all-glob" class="headerlink" title="glob-all , glob"></a>glob-all , glob</h2><p>在webpack中的使用。<br><a href="https://www.cnblogs.com/waitforyou/p/7044171.html" target="_blank" rel="noopener">link</a></p>
+<p>读取某个文件夹下所有的文件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">glob(<span class="string">"./src/components/**/*.js"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">er, files</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(files);</span><br><span class="line">    <span class="keyword">return</span> files</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// [ './src/components/index/index.js',</span></span><br><span class="line"><span class="comment">//     './src/components/news/n.js',</span></span><br><span class="line"><span class="comment">//     './src/components/news/news.js' ]</span></span><br></pre></td></tr></table></figure>
+<h2 id="webpack3-webpack4升级"><a href="#webpack3-webpack4升级" class="headerlink" title="webpack3-webpack4升级"></a>webpack3-webpack4升级</h2><p>从webpack4开始官方移除了commonchunk插件，改用了optimization属性进行更加灵活的配置，这也应该是从V3升级到V4的代码修改过程中最为复杂的一部分，<br>下面的代码即是optimize.splitChunks 中的一些配置参考</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  optimization: &#123;</span><br><span class="line">    runtimeChunk: &#123;</span><br><span class="line">      name: <span class="string">'manifest'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    minimizer: <span class="literal">true</span>, <span class="comment">// [new UglifyJsPlugin(&#123;...&#125;)]</span></span><br><span class="line">    splitChunks:&#123;</span><br><span class="line">      chunks: <span class="string">'async’, //表示哪些代码需要优化，有三个可选值：initial(初始块)、async(按需加载块)、all(全部块)，默认为async</span></span><br><span class="line"><span class="string">      minSize: 30000,  //表示在压缩前的最小模块大小，默认为30000</span></span><br><span class="line"><span class="string">      minChunks: 1,    //表示被引用次数，默认为1</span></span><br><span class="line"><span class="string">      maxAsyncRequests: 5, //按需加载时候最大的并行请求数，默认为5</span></span><br><span class="line"><span class="string">      maxInitialRequests: 3, //一个入口最大的并行请求数，默认为3</span></span><br><span class="line"><span class="string">       automaticNameDelimiter: ‘~’, //命名连接符</span></span><br><span class="line"><span class="string">      name: false, //拆分出来块的名字，默认由块名和hash值自动生成</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">      cacheGroups: &#123;  //缓存组。缓存组的属性除上面所有属性外，还有test, priority, reuseExistingChunk</span></span><br><span class="line"><span class="string">            * test: 用于控制哪些模块被这个缓存组匹配到</span></span><br><span class="line"><span class="string">            * priority: 缓存组打包的先后优先级</span></span><br><span class="line"><span class="string">            * reuseExistingChunk: 如果当前代码块包含的模块已经有了，就不在产生一个新的代码块</span></span><br><span class="line"><span class="string">        vendor: &#123;</span></span><br><span class="line"><span class="string">          name: '</span>vendor<span class="string">',</span></span><br><span class="line"><span class="string">          chunks: '</span>initial<span class="string">',</span></span><br><span class="line"><span class="string">          priority: -10,</span></span><br><span class="line"><span class="string">          reuseExistingChunk: false,</span></span><br><span class="line"><span class="string">          test: /node_modules\/(.*)\.js/,</span></span><br><span class="line"><span class="string">          default:true/false //开启禁用default缓存组</span></span><br><span class="line"><span class="string">        &#125;,</span></span><br><span class="line"><span class="string">        styles: &#123;</span></span><br><span class="line"><span class="string">          name: '</span>styles<span class="string">',</span></span><br><span class="line"><span class="string">          test: /\.(scss|css)$/,</span></span><br><span class="line"><span class="string">          chunks: '</span>all<span class="string">',</span></span><br><span class="line"><span class="string">          minChunks: 1,</span></span><br><span class="line"><span class="string">          reuseExistingChunk: true,</span></span><br><span class="line"><span class="string">          enforce: true</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>chunks的取值是有initial, async, all。默认情况下是async，<br>initial , all 模式会将所有来自node_modules的模块分配到一个叫vendors的缓存组；所有重复引用至少两次的代码，会被分配到default的缓存组。<br><a href="https://www.codercto.com/a/26564.html" target="_blank" rel="noopener">https://www.codercto.com/a/26564.html</a> 关于配置splitChunk的一些介绍，不是很懂。</p>
+<h2 id="babel-polyfill和babel-runtime区别"><a href="#babel-polyfill和babel-runtime区别" class="headerlink" title="babel-polyfill和babel-runtime区别"></a>babel-polyfill和babel-runtime区别</h2><p>babel-polyfill会有一定副作用，比如：<br>引入了新的全局对象：比如Promise、WeakMap等。<br>修改现有的全局对象：比如修改了Array、String的原型链等。<br>举个例子，我在项目中定义了跟规范不一致的Array.from()函数，同时引入了一个库（依赖babel-polyfill），<br>此时，这个库可能覆盖了自定义的Array.from()函数，导致出错。</p>
+<p>babel-runtime存在的原因。它将开发者依赖的全局内置对象等，抽取成单独的模块，并通过模块导入的方式引入，避免了对全局作用域的修改（污染）。<br>因此，如果是开发库、工具，可以考虑使用 babel-runtime。</p>
+<h2 id="babel-plugin-transform-runtime和-babel-runtime-区别"><a href="#babel-plugin-transform-runtime和-babel-runtime-区别" class="headerlink" title="babel-plugin-transform-runtime和 babel-runtime 区别"></a>babel-plugin-transform-runtime和 babel-runtime 区别</h2><p><a href="https://www.chyingp.com/posts/understanding-babel-runtime/" target="_blank" rel="noopener">link</a></p>
+<h2 id="babel-plugin-transform-runtime"><a href="#babel-plugin-transform-runtime" class="headerlink" title="babel-plugin-transform-runtime"></a>babel-plugin-transform-runtime</h2><p>用于构建过程的代码转换,babel-runtime是实际导入项目代码的功能模块。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>;     -&gt;  <span class="string">`npm bin`</span>/babel index.js</span><br><span class="line">=&gt;</span><br><span class="line"><span class="keyword">import</span> _Promise <span class="keyword">from</span> <span class="string">"babel-runtime/core-js/promise”;    //babel-runtime</span></span><br><span class="line"><span class="string">var promise = new _Promise();</span></span><br></pre></td></tr></table></figure>
+<h2 id="babelrc-详解"><a href="#babelrc-详解" class="headerlink" title="babelrc 详解"></a>babelrc 详解</h2><p><a href="https://www.cnblogs.com/jiebba/p/9613248.html" target="_blank" rel="noopener">babel 用法及其 .babelrc 的配置详解，想做前端架构，拒绝一知半解</a><br><a href="https://excaliburhan.com/post/babel-preset-and-plugins.html" target="_blank" rel="noopener">如何写好.babelrc？Babel的presets和plugins配置解析</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">es2015(es6集合 )</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"presets"</span>: [  <span class="comment">//presets 其实就是一堆plugins的预设起到了方便的作用 如果不采用 presets 完全可以单独引用某个功能</span></span><br><span class="line">        [<span class="string">"env"</span>,&#123; </span><br><span class="line">            “targets”:&#123; </span><br><span class="line">                “browsers”:[“last <span class="number">2</span> version”,”safari&gt;=<span class="number">7</span><span class="string">"]</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">        &#125;],</span></span><br><span class="line"><span class="string">        [“es2015”],</span></span><br><span class="line"><span class="string">        [“latest”],</span></span><br><span class="line"><span class="string">        [“react"</span>]</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">"plugins"</span>: [</span><br><span class="line">        <span class="string">"transform-runtime” //babel-runtime是实际导入项目代码的功能模块。转码后额外require core-js的模块如promise class等等</span></span><br><span class="line"><span class="string">        "</span>transform-es2015-classes”,</span><br><span class="line">        <span class="string">"transform-regenerator”,</span></span><br><span class="line"><span class="string">        "</span>transform-runtime<span class="string">", &#123;</span></span><br><span class="line"><span class="string">          "</span>helpers<span class="string">": true,</span></span><br><span class="line"><span class="string">          "</span>polyfill”:<span class="literal">false</span>, <span class="comment">//设置为false可以优化代码</span></span><br><span class="line">          <span class="string">"regenerator"</span>: <span class="literal">true</span>,</span><br><span class="line">          <span class="string">"moduleName"</span>: <span class="string">"babel-runtime"</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">transform-runtime </span><br><span class="line"><span class="keyword">var</span> sym = <span class="built_in">Symbol</span>(); </span><br><span class="line"><span class="keyword">var</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>( ); </span><br><span class="line"><span class="built_in">console</span>.log(arr[<span class="built_in">Symbol</span>.iterator]( ));</span><br><span class="line"></span><br><span class="line"><span class="string">"use strict”;</span></span><br><span class="line"><span class="string"> var _getIterator2 = require("</span>@babel/runtime-corejs2/core-js/get-iterator<span class="string">");</span></span><br><span class="line"><span class="string">var _getIterator3 = _interopRequireDefault(_getIterator2);</span></span><br><span class="line"><span class="string">var _promise = require("</span>@babel/runtime-corejs2/core-js/promise<span class="string">");</span></span><br><span class="line"><span class="string">var _promise2 = _interopRequireDefault(_promise);</span></span><br><span class="line"><span class="string">var _symbol = require("</span>@babel/runtime-corejs2/core-js/symbol”);</span><br><span class="line"><span class="keyword">var</span> _symbol2 = _interopRequireDefault(_symbol);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">_interopRequireDefault</span>(<span class="params">obj</span>) </span>&#123; </span><br><span class="line">    <span class="keyword">return</span> obj &amp;&amp; obj.__esModule ? obj : &#123; <span class="attr">default</span>: obj &#125;; </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> sym = (<span class="number">0</span>, _symbol2.default)();</span><br><span class="line"><span class="keyword">var</span> promise = <span class="keyword">new</span> _promise2.default();</span><br><span class="line"><span class="built_in">console</span>.log((<span class="number">0</span>, _getIterator3.default)(arr));</span><br><span class="line"></span><br><span class="line"><span class="string">`</span></span><br></pre></td></tr></table></figure>
+<h2 id="webpack处理css文件"><a href="#webpack处理css文件" class="headerlink" title="webpack处理css文件"></a>webpack处理css文件</h2><p>css-loader css-loader 中 importLoaders 选项的作用是，用于配置 css-loader 作用于 @import 的资源之前需要经过其他 loader 的个数。@ import 用于 css 源码中引用 其他模块的关键字，如果你的项目中确定不会涉及模块化，可以忽略此配置项。</p>
+<p>style-loader 如果需要将编译后的 css文件独立导出，则须将 style-loader 替换为 extract-text­-webpack-plugin，<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">npm install css-loader style-loader --save-dev  </span><br><span class="line">rules: [</span><br><span class="line">    &#123;</span><br><span class="line">        test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">        use: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>]</span><br><span class="line">    &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<h2 id="webpack处理图片文件"><a href="#webpack处理图片文件" class="headerlink" title="webpack处理图片文件"></a>webpack处理图片文件</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">npm install url-loader --save-dev <span class="comment">// 处理图片文件 </span></span><br><span class="line">npm install file-loader -D <span class="comment">//如果不正确</span></span><br><span class="line">rules: [</span><br><span class="line">    &#123;</span><br><span class="line">        test: <span class="regexp">/\.(png|jpe?g|gif|svg)(\?.*)?$/</span>,</span><br><span class="line">        loader: <span class="string">'url-loader'</span>,</span><br><span class="line">        options: &#123;</span><br><span class="line">            limit: <span class="number">8192</span>,</span><br><span class="line">            name: path.posix.join(<span class="string">''</span>,<span class="string">'img/[name].[hash:7].[ext]'</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 添加到这并且会按照文件大小, 或者转化为 base64, 或者单独作为文件</span></span><br><span class="line">        <span class="comment">//在大小限制可以name属性/[name].[ext]，会将我们的文件生成在设定的文件夹下。</span></span><br><span class="line">    &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="实现Npm-run-dev"><a href="#实现Npm-run-dev" class="headerlink" title="实现Npm run dev"></a>实现Npm run dev</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack-dev-server -D <span class="comment">//</span></span><br><span class="line"><span class="string">"scripts"</span>: &#123;</span><br><span class="line">    “build<span class="string">": "</span>webpack”, <span class="comment">//生成dict,build压缩后的文件</span></span><br><span class="line">    <span class="string">"dev"</span>: <span class="string">"webpack-dev-server --config ./webpack.config.js”//不压缩直接在线跑</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/基础/" rel="tag"># 基础</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/14/reactnote/" rel="next" title="react笔记">
+                <i class="fa fa-chevron-left"></i> react笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/20/nodejs/" rel="prev" title="nodejs中间件笔记">
+                nodejs中间件笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">卡牌大叔</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/tedQB" title="GitHub &rarr; https://github.com/tedQB" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/5462608131" title="Weibo &rarr; https://weibo.com/u/5462608131" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/kapaidashu" title="Twitter &rarr; https://twitter.com/kapaidashu" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-基础"><span class="nav-number">1.</span> <span class="nav-text">babel 基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-core"><span class="nav-number">2.</span> <span class="nav-text">babel-core</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-cli"><span class="nav-number">3.</span> <span class="nav-text">babel-cli</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-node"><span class="nav-number">4.</span> <span class="nav-text">babel-node</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-register"><span class="nav-number">5.</span> <span class="nav-text">babel-register</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#babel-polyfill"><span class="nav-number">5.1.</span> <span class="nav-text">babel-polyfill</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack-大致运行流程"><span class="nav-number">6.</span> <span class="nav-text">webpack 大致运行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何编写一个Loader"><span class="nav-number">7.</span> <span class="nav-text">如何编写一个Loader</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何写一个webpack插件"><span class="nav-number">8.</span> <span class="nav-text">如何写一个webpack插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何手写一个简单的webpack"><span class="nav-number">9.</span> <span class="nav-text">如何手写一个简单的webpack</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#clean-webpack-plugin"><span class="nav-number">10.</span> <span class="nav-text">clean-webpack-plugin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#extract-text-webpack-plugin"><span class="nav-number">10.1.</span> <span class="nav-text">extract-text-webpack-plugin</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#glob-all-glob"><span class="nav-number">11.</span> <span class="nav-text">glob-all , glob</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack3-webpack4升级"><span class="nav-number">12.</span> <span class="nav-text">webpack3-webpack4升级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-polyfill和babel-runtime区别"><span class="nav-number">13.</span> <span class="nav-text">babel-polyfill和babel-runtime区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-plugin-transform-runtime和-babel-runtime-区别"><span class="nav-number">14.</span> <span class="nav-text">babel-plugin-transform-runtime和 babel-runtime 区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-plugin-transform-runtime"><span class="nav-number">15.</span> <span class="nav-text">babel-plugin-transform-runtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babelrc-详解"><span class="nav-number">16.</span> <span class="nav-text">babelrc 详解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack处理css文件"><span class="nav-number">17.</span> <span class="nav-text">webpack处理css文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack处理图片文件"><span class="nav-number">18.</span> <span class="nav-text">webpack处理图片文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现Npm-run-dev"><span class="nav-number">19.</span> <span class="nav-text">实现Npm run dev</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">卡牌大叔</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.0.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

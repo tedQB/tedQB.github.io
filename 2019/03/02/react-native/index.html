@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="对ReactNative评价 跨平台：目前React Native官方已经支持iOS、Android两个平台的移动设备，民间也有一些大牛在做macOS、tvOS，甚至UWP平台的适配。但由于不同平台特性不同，并不能一份代码在所有平台上直接运行，React Native的思想是「Learn once, write anywhere」，我们需要针对不同平台的特性写出不同的代码，尽量保持组件的高可复用性">
+<meta name="keywords" content="基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="react-native笔记">
+<meta property="og:url" content="http://yoursite.com/2019/03/02/react-native/index.html">
+<meta property="og:site_name" content="卡牌大叔的博客">
+<meta property="og:description" content="对ReactNative评价 跨平台：目前React Native官方已经支持iOS、Android两个平台的移动设备，民间也有一些大牛在做macOS、tvOS，甚至UWP平台的适配。但由于不同平台特性不同，并不能一份代码在所有平台上直接运行，React Native的思想是「Learn once, write anywhere」，我们需要针对不同平台的特性写出不同的代码，尽量保持组件的高可复用性">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/rn7.png">
+<meta property="og:image" content="http://yoursite.com/images/rn8.png">
+<meta property="og:image" content="http://yoursite.com/images/rn9.png">
+<meta property="og:image" content="http://yoursite.com/images/rn10.png">
+<meta property="og:image" content="http://yoursite.com/images/rn5.png">
+<meta property="og:image" content="http://yoursite.com/images/rn6.png">
+<meta property="og:image" content="http://yoursite.com/images/rn4.png">
+<meta property="og:image" content="http://yoursite.com/images/rn3.png">
+<meta property="og:image" content="http://yoursite.com/images/rn2.png">
+<meta property="og:image" content="http://yoursite.com/images/rn1.png">
+<meta property="og:updated_time" content="2019-06-02T15:21:52.926Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="react-native笔记">
+<meta name="twitter:description" content="对ReactNative评价 跨平台：目前React Native官方已经支持iOS、Android两个平台的移动设备，民间也有一些大牛在做macOS、tvOS，甚至UWP平台的适配。但由于不同平台特性不同，并不能一份代码在所有平台上直接运行，React Native的思想是「Learn once, write anywhere」，我们需要针对不同平台的特性写出不同的代码，尽量保持组件的高可复用性">
+<meta name="twitter:image" content="http://yoursite.com/images/rn7.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="卡牌大叔的博客" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/02/react-native/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>react-native笔记 | 卡牌大叔的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">卡牌大叔的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/02/react-native/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="卡牌大叔">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="卡牌大叔的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">react-native笔记
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-02 22:57:22" itemprop="dateCreated datePublished" datetime="2019-03-02T22:57:22+08:00">2019-03-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-02 23:21:52" itemprop="dateModified" datetime="2019-06-02T23:21:52+08:00">2019-06-02</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="对ReactNative评价"><a href="#对ReactNative评价" class="headerlink" title="对ReactNative评价"></a>对ReactNative评价</h2><ul>
+<li><p>跨平台：目前React Native官方已经支持iOS、Android两个平台的移动设备，民间也有一些大牛在做macOS、tvOS，甚至UWP平台的适配。但由于不同平台特性不同，并不能一份代码在所有平台上直接运行，React Native的思想是「Learn once, write anywhere」，我们需要针对不同平台的特性写出不同的代码，尽量保持组件的高可复用性。</p>
+</li>
+<li><p>性能：官方宣称性能堪比Native，实际使用中我们会发现几个问题，比如复杂视图渲染出View层级过多、ListView（等同于iOS上的UITableView）无重用机制、有些组件存在内存泄露。这就会导致在部分低端Android机型上的性能过差，复杂的、大型的应用会有明显性能问题。</p>
+</li>
+<li><p>热更新：由于App Store应用商店发版迭代效率问题，热更新成为了iOS平台非常渴求的功能，可喜的是React Native的热更新能力非常好，通过将JavaScript代码部署到服务器中，运行过程中即可重新reload整个界面。</p>
+</li>
+<li><p>学习成本：对于iOS开发者来讲，要了解相当数量的Web前端开发知识才可以进行开发，对于Web前端开发者来讲，对于原生性能调优则需要原生开发知识和经验，所以说学习成本略高。</p>
+</li>
+<li><p>开发效率：Android和iOS平台可复用很多组件，仅部分代码需要各自平台分别维护，所以比开发两个平台原生应用效率要高得多。加上本身可动态渲染的能力，不用重新编译，Command⌘+R即可重新渲染界面，开发效率更是惊人地快。</p>
+</li>
+</ul>
+<h2 id="React-Native-几大导航类型"><a href="#React-Native-几大导航类型" class="headerlink" title="React-Native 几大导航类型"></a>React-Native 几大导航类型</h2><ul>
+<li>createStackNavigator 提供APP屏幕之间切换的能力，它是以栈的形式还管理屏幕之间的切换，新切换到的屏幕会放在栈的顶部。<br>组件中可以使 navigation.navigate(’routerModuleName’, {param} )   来切换转场</li>
+</ul>
+<ul>
+<li><p>createDrawerNavigator 侧边导航抽屉路由</p>
+<p>navigation.openDrawer( )  打开侧边栏<br>navigation.toggleDrawer( )  切换侧边栏<br>navigation.closeDrawer( ) 关闭侧边栏</p>
+</li>
+<li><p>createMaterialTopTabNavigator  顶部导航</p>
+</li>
+<li><p>createBottomTabNavigator 底部导航</p>
+</li>
+</ul>
+<h2 id="如何开发一个换肤的功能？"><a href="#如何开发一个换肤的功能？" class="headerlink" title="如何开发一个换肤的功能？"></a>如何开发一个换肤的功能？</h2><p>1 开发ThemeFactory 包含主题列表，主题样式<br>2 开发一个Dao，用来持久化应用的主题，包含存，取数据，浏览器可以存储在locationStorage里，react-native存储在AsyncStorage里。<br>3 开发换肤组件html+css，组件选取盘，比如颜色名称，<br>4 开发action，配置action类型，THEME_CHANGE(主题更改)，THEME_INIT(主题初始化)， SHOW_THEME_VIEW(皮肤组件显示)， 以及相对应的reducer.<br>5 用户前端点击换肤组件，触发选取组件事件，在事件里拿到主题的key,  调用Dao保存当前选取主题，解决用户离开应用再返回时候拿到配置<br>触发sTHEME_CHANGE action，reducer，把颜色key 保存到state里，用来做应用适时替换。<br>这样就完成了换肤功能。</p>
+<h2 id="redux-EventBut-DeviceEventEmitter不同点"><a href="#redux-EventBut-DeviceEventEmitter不同点" class="headerlink" title="redux/EventBut/DeviceEventEmitter不同点"></a>redux/EventBut/DeviceEventEmitter不同点</h2><p>redux  用来处理整个应用的共享数据，持久化数据，页面动作相关的数据</p>
+<p>EventBus 可以用来处理多个页面之间的 简单的状态传递，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">EventBus.getInstance().addListener(EventTypes.favoriteChanged_trending, <span class="keyword">this</span>.favoriteChangeListener = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">this</span>.isFavoriteChanged = <span class="literal">true</span>;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">EventBus.getInstance().addListener(EventTypes.bottom_tab_select, <span class="keyword">this</span>.bottomTabSelectListener = <span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (data.to === <span class="number">1</span> &amp;&amp; <span class="keyword">this</span>.isFavoriteChanged) &#123;</span><br><span class="line">        <span class="keyword">this</span>.loadData(<span class="literal">null</span>, <span class="literal">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">this</span>.storeName === FLAG_STORAGE.flag_popular) &#123;</span><br><span class="line">    EventBus.getInstance().fireEvent(EventTypes.favorite_changed_popular);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    EventBus.getInstance().fireEvent(EventTypes.favoriteChanged_trending);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>DeviceEventEmitter 用来解决单页面 组件之间的状态处理<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.timeSpanChangeListener = DeviceEventEmitter.addListener(EVENT_TYPE_TIME_SPAN_CHANGE, (timeSpan) =&gt; &#123;</span><br><span class="line">    <span class="keyword">this</span>.timeSpan = timeSpan;</span><br><span class="line">    <span class="keyword">this</span>.loadData();</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">DeviceEventEmitter.emit(EVENT_TYPE_TIME_SPAN_CHANGE, tab);</span><br></pre></td></tr></table></figure></p>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><p>action<br><img src="/images/rn7.png">          </p>
+<p>reducer<br><img src="/images/rn8.png">   </p>
+<p>dispatch 一个action之后，进入reducer，处理完成之后统一返回给state</p>
+<p>作为this.props的属性 返回给 this.props</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mapStateToProps = <span class="function"><span class="params">state</span> =&gt;</span> (&#123;</span><br><span class="line">    popular: state.popular</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> mapDispatchToProps = <span class="function"><span class="params">dispatch</span> =&gt;</span>(&#123;</span><br><span class="line">    onLoadPopularData: <span class="function">(<span class="params">storeName, url</span>) =&gt;</span> dispatch(actions.onLoadPopularData(storeName,url))</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> PopularTabPage = connect(mapStateToProps, mapDispatchToProps)(PopularTab)</span><br></pre></td></tr></table></figure>
+<p>这里的state.popular实际为 combineReducers里配置的popular名称以及总返回值。<br><img src="/images/rn9.png"> </p>
+<p><img src="/images/rn10.png"> </p>
+<p>AsyncStorage取代localStorage<br>import {AsyncStorage} from ‘react-native’</p>
+<h2 id="fetch取代-httpajaxrequest请求"><a href="#fetch取代-httpajaxrequest请求" class="headerlink" title="fetch取代 httpajaxrequest请求"></a>fetch取代 httpajaxrequest请求</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> url = <span class="string">`https://api.github.com/search/repositories?q=<span class="subst">$&#123;<span class="keyword">this</span>.searchKey&#125;</span>`</span>;</span><br><span class="line"><span class="built_in">console</span>.log(url);</span><br><span class="line">fetch(url)</span><br><span class="line">    .then(<span class="function"><span class="params">response</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> response.text() <span class="comment">//格式为为text</span></span><br><span class="line">    &#125;).then(<span class="function"><span class="params">responseText</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            showText:responseText</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;).catch(<span class="function"><span class="params">e</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            showText:e.toString()</span><br><span class="line">        &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>SafeAreaView  针对iPhone X设备齐刘海页面适配的组件<br>友盟  U-DPlus 互联网运营数据服务需要申请注册才能使用。集成ReactNative也是巨坑无比</p>
+<p>====</p>
+<h2 id="react-native-debug模式加载100-之后空白页"><a href="#react-native-debug模式加载100-之后空白页" class="headerlink" title="react native debug模式加载100%之后空白页"></a>react native debug模式加载100%之后空白页</h2><ul>
+<li>“GET /debuggerWorker.js HTTP/1.1” 404 156 “<a href="http://localhost:8081/debugger-ui“" target="_blank" rel="noopener">http://localhost:8081/debugger-ui“</a></li>
+<li>Downloading JavaScript bundle 100%</li>
+</ul>
+<ol>
+<li>“GET /debuggerWorker.js HTTP/1.1”的问题是由于我chrome的问题无法自动打开<a href="http://localhost:8081/debugger-ui的页面导致的。" target="_blank" rel="noopener">http://localhost:8081/debugger-ui的页面导致的。</a></li>
+<li>Downloading JavaScript bundle 100%加载之后一直空白页尝试了多次一直都这样。</li>
+</ol>
+<p>最后我通过使用官方的react native debugger工具成功debug了</p>
+<h2 id="禁用黄色调试信息"><a href="#禁用黄色调试信息" class="headerlink" title="禁用黄色调试信息"></a>禁用黄色调试信息</h2><p>constructor(props){<br>    super(props);<br>    console.disableYellowBox = true;<br>}</p>
+<h2 id="reduxifyNavigator-已经废弃"><a href="#reduxifyNavigator-已经废弃" class="headerlink" title="reduxifyNavigator 已经废弃"></a>reduxifyNavigator 已经废弃</h2><p><img src="/images/rn5.png"><br><img src="/images/rn6.png"></p>
+<h2 id="Failed-to-build-iOS-project"><a href="#Failed-to-build-iOS-project" class="headerlink" title="Failed to build iOS project"></a>Failed to build iOS project</h2><p>info<br>error Failed to build iOS project. We ran “xcodebuild” command but it exited with error code 65. To debug build logs further, consider building your app with Xcode.app, by opening Github_RN_test.xcodeproj<br><strong> BUILD FAILED </strong></p>
+<p>原因：xcode编译未通过，说明ios 有问题，可以打开ios项目在xcode里build一下查看具体出错原因。<br>一般出现的是模块安装，删除过程中，react-native link过后的模块 出错，没有删除或者未添加。<br><img src="/images/rn4.png"></p>
+<h2 id="react-native-vector-icons-出错"><a href="#react-native-vector-icons-出错" class="headerlink" title="react-native-vector-icons 出错"></a>react-native-vector-icons 出错</h2><p><img src="/images/rn3.png"><br>reason: react-native-vector-icons 安装后没有执行link 简单执行react-native link 并不能自动执行所有模块的link操作。<br>react-native link react-native-vector-icons</p>
+<h2 id="Navigator-没有用createAppContainer-出错"><a href="#Navigator-没有用createAppContainer-出错" class="headerlink" title="Navigator 没有用createAppContainer 出错"></a>Navigator 没有用createAppContainer 出错</h2><p><img src="/images/rn2.png"></p>
+<h2 id="没有-react-native-link"><a href="#没有-react-native-link" class="headerlink" title="没有 react-native link"></a>没有 react-native link</h2><p>react-native 模块安装后没有 react-native link<br><img src="/images/rn1.png"></p>
+<h2 id="不能多重项目嵌套运行"><a href="#不能多重项目嵌套运行" class="headerlink" title="不能多重项目嵌套运行"></a>不能多重项目嵌套运行</h2><p>error: No bundle URL present Make sure you’re running a packager server or have included a .jsbundle file</p>
+<ul>
+<li>多半是一个项目嵌套多个项目，多个package.json </li>
+<li>本地开了翻墙工具</li>
+</ul>
+<p>-Go back to the old version of React Native</p>
+<ul>
+<li>Run “npm install -g react-native-git-upgrade”</li>
+<li>Run “react-native-git-upgrade”</li>
+</ul>
+<h2 id="Loading-dependency-graph-done-死住"><a href="#Loading-dependency-graph-done-死住" class="headerlink" title="Loading dependency graph, done. 死住"></a>Loading dependency graph, done. 死住</h2><ul>
+<li>查看端口8081是否被占用</li>
+<li>在浏览器中输入<a href="http://localhost:8081/index.ios.bundle，查看是否有bundling的提示" target="_blank" rel="noopener">http://localhost:8081/index.ios.bundle，查看是否有bundling的提示</a></li>
+<li>删除手机/模拟器上的App,重新执行run-ios</li>
+<li>下载react第三方库 <a href="https://github.com/facebook/react-native/tree/0.57-stable/scripts" target="_blank" rel="noopener">https://github.com/facebook/react-native/tree/0.57-stable/scripts</a></li>
+<li>正常情况下，react-native run-ios打包完成，在模拟器上会马上安装demo APP，然后加载 Loading dependency graph, done，哪个部位出错就解决哪个部位。</li>
+</ul>
+<p>解决react-native 8081端口占用问题<br>lsof -i:8081<br>kill pid pid</p>
+<h2 id="开发目录权限问题"><a href="#开发目录权限问题" class="headerlink" title="开发目录权限问题"></a>开发目录权限问题</h2><p>gitclone下来的项目 react-native run-ios 会出现Metro Bundle EACCES: permission denied</p>
+<ol>
+<li>cd 你的文件夹路径的上一级目录。</li>
+<li>sudo chmod -R 777 你的文件夹名。</li>
+<li>输入密码。<br>4.成功<br><a href="https://www.jianshu.com/p/ea5635dbfc23" target="_blank" rel="noopener">link</a></li>
+</ol>
+<h2 id="boost-1-63-0-tar-gz等错误"><a href="#boost-1-63-0-tar-gz等错误" class="headerlink" title="boost_1_63_0.tar.gz等错误"></a>boost_1_63_0.tar.gz等错误</h2><p>【RN踩坑】React-native 0.45版本以上出现 boost_1_63_0.tar.gz等错误</p>
+<p><a href="https://blog.csdn.net/baiyu753159/article/details/76945236" target="_blank" rel="noopener">link</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/基础/" rel="tag"># 基础</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/20/nodejs/" rel="next" title="nodejs中间件笔记">
+                <i class="fa fa-chevron-left"></i> nodejs中间件笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/02/fe-engineering/" rel="prev" title="前端工程化包含哪些内容？">
+                前端工程化包含哪些内容？ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">卡牌大叔</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/tedQB" title="GitHub &rarr; https://github.com/tedQB" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/5462608131" title="Weibo &rarr; https://weibo.com/u/5462608131" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/kapaidashu" title="Twitter &rarr; https://twitter.com/kapaidashu" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#对ReactNative评价"><span class="nav-number">1.</span> <span class="nav-text">对ReactNative评价</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-Native-几大导航类型"><span class="nav-number">2.</span> <span class="nav-text">React-Native 几大导航类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何开发一个换肤的功能？"><span class="nav-number">3.</span> <span class="nav-text">如何开发一个换肤的功能？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redux-EventBut-DeviceEventEmitter不同点"><span class="nav-number">4.</span> <span class="nav-text">redux/EventBut/DeviceEventEmitter不同点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目结构"><span class="nav-number">5.</span> <span class="nav-text">项目结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fetch取代-httpajaxrequest请求"><span class="nav-number">6.</span> <span class="nav-text">fetch取代 httpajaxrequest请求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react-native-debug模式加载100-之后空白页"><span class="nav-number">7.</span> <span class="nav-text">react native debug模式加载100%之后空白页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#禁用黄色调试信息"><span class="nav-number">8.</span> <span class="nav-text">禁用黄色调试信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reduxifyNavigator-已经废弃"><span class="nav-number">9.</span> <span class="nav-text">reduxifyNavigator 已经废弃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Failed-to-build-iOS-project"><span class="nav-number">10.</span> <span class="nav-text">Failed to build iOS project</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react-native-vector-icons-出错"><span class="nav-number">11.</span> <span class="nav-text">react-native-vector-icons 出错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Navigator-没有用createAppContainer-出错"><span class="nav-number">12.</span> <span class="nav-text">Navigator 没有用createAppContainer 出错</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#没有-react-native-link"><span class="nav-number">13.</span> <span class="nav-text">没有 react-native link</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不能多重项目嵌套运行"><span class="nav-number">14.</span> <span class="nav-text">不能多重项目嵌套运行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Loading-dependency-graph-done-死住"><span class="nav-number">15.</span> <span class="nav-text">Loading dependency graph, done. 死住</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发目录权限问题"><span class="nav-number">16.</span> <span class="nav-text">开发目录权限问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#boost-1-63-0-tar-gz等错误"><span class="nav-number">17.</span> <span class="nav-text">boost_1_63_0.tar.gz等错误</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">卡牌大叔</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.0.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

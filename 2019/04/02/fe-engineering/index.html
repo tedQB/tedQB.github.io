@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前端工程化的衡量标准？ 从开发角度衡量工程化主要体现在“快”。 从测试角度衡量工程化主要体现在“快”和“准”。  从部署角度衡量工程化主要体现在“稳”。  开发层面 的构建问题 ES规范与浏览器兼容性不一致[ES规范的转译]  css 的弱编程能力[css预编译器支持,PostCSS 处理 hack后缀] 资源定位。 图片压缩/base64 内嵌/CSS Sprites[自动创建 CSS Spri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端工程化包含哪些内容？">
+<meta property="og:url" content="http://yoursite.com/2019/04/02/fe-engineering/index.html">
+<meta property="og:site_name" content="卡牌大叔的博客">
+<meta property="og:description" content="前端工程化的衡量标准？ 从开发角度衡量工程化主要体现在“快”。 从测试角度衡量工程化主要体现在“快”和“准”。  从部署角度衡量工程化主要体现在“稳”。  开发层面 的构建问题 ES规范与浏览器兼容性不一致[ES规范的转译]  css 的弱编程能力[css预编译器支持,PostCSS 处理 hack后缀] 资源定位。 图片压缩/base64 内嵌/CSS Sprites[自动创建 CSS Spri">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/fe1.png">
+<meta property="og:image" content="http://yoursite.com/images/fe2.png">
+<meta property="og:image" content="http://yoursite.com/images/fe3.png">
+<meta property="og:image" content="http://yoursite.com/images/fe4.png">
+<meta property="og:updated_time" content="2019-06-02T15:40:25.656Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端工程化包含哪些内容？">
+<meta name="twitter:description" content="前端工程化的衡量标准？ 从开发角度衡量工程化主要体现在“快”。 从测试角度衡量工程化主要体现在“快”和“准”。  从部署角度衡量工程化主要体现在“稳”。  开发层面 的构建问题 ES规范与浏览器兼容性不一致[ES规范的转译]  css 的弱编程能力[css预编译器支持,PostCSS 处理 hack后缀] 资源定位。 图片压缩/base64 内嵌/CSS Sprites[自动创建 CSS Spri">
+<meta name="twitter:image" content="http://yoursite.com/images/fe1.png">
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="卡牌大叔的博客" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/02/fe-engineering/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>前端工程化包含哪些内容？ | 卡牌大叔的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">卡牌大叔的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/02/fe-engineering/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="卡牌大叔">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="卡牌大叔的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前端工程化包含哪些内容？
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-02 23:30:52" itemprop="dateCreated datePublished" datetime="2019-04-02T23:30:52+08:00">2019-04-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-02 23:40:25" itemprop="dateModified" datetime="2019-06-02T23:40:25+08:00">2019-06-02</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前端工程化的衡量标准？"><a href="#前端工程化的衡量标准？" class="headerlink" title="前端工程化的衡量标准？"></a>前端工程化的衡量标准？</h2><ol>
+<li>从开发角度衡量工程化主要体现在“快”。</li>
+<li>从测试角度衡量工程化主要体现在“快”和“准”。 </li>
+<li>从部署角度衡量工程化主要体现在“稳”。</li>
+</ol>
+<h2 id="开发层面-的构建问题"><a href="#开发层面-的构建问题" class="headerlink" title="开发层面 的构建问题"></a>开发层面 的构建问题</h2><ol>
+<li>ES规范与浏览器兼容性不一致[ES规范的转译] </li>
+<li>css 的弱编程能力[css预编译器支持,PostCSS 处理 hack后缀]</li>
+<li>资源定位。</li>
+<li>图片压缩/base64 内嵌/CSS Sprites[自动创建 CSS Sprites 图 ]</li>
+<li>模块化组件化开发，</li>
+<li>模块依赖分析和压缩打包[ JavaScript 模块化规范支持]。</li>
+<li>增量更新于缓存</li>
+<li>开发环境、测试环境和生产环境 区分</li>
+</ol>
+<p>解决：脚手架制作(Yeoman.js,commander.js)，对webpack进行二次封装( Fis，easywebpack) ，<br>整合一些webpack的一些插件和loader</p>
+<h2 id="协作层面"><a href="#协作层面" class="headerlink" title="协作层面"></a>协作层面</h2><p>JavaScript部分逻辑依赖接口 API。<br>解决：webpack-dev-middleware ，动态构建，热更新HMR，Mock服务</p>
+<h2 id="部署层面"><a href="#部署层面" class="headerlink" title="部署层面"></a>部署层面</h2><p>部分资源需要借助后端工程师部署。<br>解决：</p>
+<ul>
+<li>搭建本地工作流，测试沙箱，</li>
+<li>云平台工作流，gitlab，gitflow，WebHook </li>
+<li>继续集成持续交付(宙斯盾) 分支实现自动构建和测试。持续交付在持续集成的基础上 ，将集成并自动构建、测试通过的代码<br>自动部署至测试或者仿真生产环境中 ，而生产环境的部署仍须人工操作</li>
+</ul>
+<h2 id="前端开发人员培养"><a href="#前端开发人员培养" class="headerlink" title="前端开发人员培养"></a>前端开发人员培养</h2><p>基础素质<br><img src="/images/fe1.png"><br>方向 node方向，多终端方向(web/手机)， 可视化方向，</p>
+<p>不论角色如何转变，前端工程师始终需要坚持如下两项原则。 </p>
+<p><em>于产品而言，须保证性能和体验。
+</em>于开发而言，须保证快速与严谨。</p>
+<h2 id="本地工作流"><a href="#本地工作流" class="headerlink" title="本地工作流"></a>本地工作流</h2><p><img src="/images/fe2.png"></p>
+<h2 id="HMR工作流程"><a href="#HMR工作流程" class="headerlink" title="HMR工作流程"></a>HMR工作流程</h2><p><img src="/images/fe3.png"></p>
+<p>1&gt; 修改源文件并保存后， webpack 监听到 Filesystem Event 事件并触发了重新构建行为<br>2&gt; 构建完成之后， webpack将模块变动信息传递给 HMR Server。<br>3&gt; HMRServer通过WebSocket发送Push信息告知HMRRuntime需要更新客 户端模块 ， HMRRuntime 随后通过 HTTP 获取待更新模块的内容详情。<br>4&gt; 最终， HMRRuntime 将更新的模块进行替换，在此过程中浏览器不会进行刷新。</p>
+<p>HMR Sever 以何种形式的文件将信息传递给 Runtime, Runtime 又是如何替换模块内容井 且立即生效等 。 其中涉及 webpack 内 部细节以及浏览器原理的部分知识</p>
+<h2 id="缓存策略"><a href="#缓存策略" class="headerlink" title="缓存策略"></a>缓存策略</h2><ul>
+<li>强制缓存<br>Cach-control: no-cache/max-age=31536000(1年)<br>expires = Sat, 14 Mar 2020 07:55:24 GMT </li>
+</ul>
+<p>协商缓存<br>request if-none-match:&lt;Etag值&gt;  response:Etag, </p>
+<p><img src="/images/fe4.png"></p>
+<p>覆盖更新与增量更新都是建立在启用浏览器强制缓存策略的前提下的。<br>增量更新是目前被业界广泛使用的前端静态资源更新策略，普遍的实现方案是通过为文件名添加 hash指纹。<br>覆盖更新的缺陷较多且没有较好的解决方案</p>
+<ul>
+<li>覆盖更新：<br>hash 指纹:通过既 定的数据摘要算法(目前使用 较广泛的是 md5)计算出文件的 hash值<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">”</span> <span class="attr">stylesheet</span>” <span class="attr">href</span>=<span class="string">”main</span> <span class="attr">.home</span> <span class="attr">.css</span>?<span class="attr">v</span>=<span class="string">858d5483”</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span> <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>问题：第一，必须保证 html 文件与改动的静态文件同步更新，否则会出现资源不同步 的情况 。第二，不利于版本回滚。</p>
+<ul>
+<li>增量更新：<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span>   </span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">”</span> <span class="attr">stylesheet</span>” <span class="attr">href</span>=<span class="string">”main.home.858d543.css”</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">”text/javascript”</span> <span class="attr">src</span>=<span class="string">"main.home .bbcdaf73 . js"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>可以将静态资源先于动态 HTML 部署， 此时静态资源没有引用入口，不会对线上环境产生影响</p>
+<h2 id="模块和组件的区别"><a href="#模块和组件的区别" class="headerlink" title="模块和组件的区别"></a>模块和组件的区别</h2><p>模块是一个白盒，侧重的是对属性的封装， 重心在设计和开发阶段， 不关注运行时逻辑，组件是一个黑盒，内部的逻辑是不可见的 。<br>组件是一个可以独立部署的软件单元，面向的是运行时，侧重于产品的功能性。 模块可以理解为零件。</p>
+<p>如轮胎上的螺丝钉，而组件则是轮胎，组件是具备某项完整功能的一个整体 。 具体到前端领域， 一个 button是一个模块， 一个包括多个button的导航栏是一个组件。</p>
+<p>模块化开发的价值</p>
+<ol>
+<li>避免命名冲突。 </li>
+<li>便于依赖管理。</li>
+<li>利于性能优化。<br> 其一，虽然不使用模块化规范开发也可以 实现按需加载，但是配合模块化规范的依赖管理功能可以让按需加载的模块更加易 于管理.<br> 其二，使用模块化构建工具将同步的散列模块进行合并打包， 减少了客户端的 HTTP 请求数量，不仅提高了 Web 应用的解析速度，而且减小了服 务器的并发压力;<br> 其三 ，细粒度的模块划分搭配动态加载令 Web 应用程序的解析更顺畅</li>
+<li><p>提高可维护性。 </p>
+</li>
+<li><p>利于代码复用。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/02/react-native/" rel="next" title="react-native笔记">
+                <i class="fa fa-chevron-left"></i> react-native笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/02/Technical-principle/" rel="prev" title="前端技术原理">
+                前端技术原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">卡牌大叔</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/tedQB" title="GitHub &rarr; https://github.com/tedQB" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/5462608131" title="Weibo &rarr; https://weibo.com/u/5462608131" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/kapaidashu" title="Twitter &rarr; https://twitter.com/kapaidashu" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前端工程化的衡量标准？"><span class="nav-number">1.</span> <span class="nav-text">前端工程化的衡量标准？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发层面-的构建问题"><span class="nav-number">2.</span> <span class="nav-text">开发层面 的构建问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#协作层面"><span class="nav-number">3.</span> <span class="nav-text">协作层面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署层面"><span class="nav-number">4.</span> <span class="nav-text">部署层面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端开发人员培养"><span class="nav-number">5.</span> <span class="nav-text">前端开发人员培养</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本地工作流"><span class="nav-number">6.</span> <span class="nav-text">本地工作流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HMR工作流程"><span class="nav-number">7.</span> <span class="nav-text">HMR工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缓存策略"><span class="nav-number">8.</span> <span class="nav-text">缓存策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模块和组件的区别"><span class="nav-number">9.</span> <span class="nav-text">模块和组件的区别</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">卡牌大叔</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.0.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

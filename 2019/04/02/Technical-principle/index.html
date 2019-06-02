@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5">
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.0.0',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="reactNative 原理说明：没有Andorid，ios，c++底层分析功力无法完全通透 React Native桥接器初探link link     React Native 渲染 在 React 框架中，JSX 源码通过 React 框架最终渲染到了浏览器的真实 DOM 中，而在 React Native 框架中，JSX 源码通过 React Native 框架编译后，通过对应平台的 Br">
+<meta name="keywords" content="原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端技术原理">
+<meta property="og:url" content="http://yoursite.com/2019/04/02/Technical-principle/index.html">
+<meta property="og:site_name" content="卡牌大叔的博客">
+<meta property="og:description" content="reactNative 原理说明：没有Andorid，ios，c++底层分析功力无法完全通透 React Native桥接器初探link link     React Native 渲染 在 React 框架中，JSX 源码通过 React 框架最终渲染到了浏览器的真实 DOM 中，而在 React Native 框架中，JSX 源码通过 React Native 框架编译后，通过对应平台的 Br">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/images/yl3.png">
+<meta property="og:image" content="http://yoursite.com/images/yl4.png">
+<meta property="og:image" content="http://yoursite.com/images/yl2.png">
+<meta property="og:image" content="http://yoursite.com/images/yl1.png">
+<meta property="og:updated_time" content="2019-06-02T16:08:42.858Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端技术原理">
+<meta name="twitter:description" content="reactNative 原理说明：没有Andorid，ios，c++底层分析功力无法完全通透 React Native桥接器初探link link     React Native 渲染 在 React 框架中，JSX 源码通过 React 框架最终渲染到了浏览器的真实 DOM 中，而在 React Native 框架中，JSX 源码通过 React Native 框架编译后，通过对应平台的 Br">
+<meta name="twitter:image" content="http://yoursite.com/images/yl3.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="卡牌大叔的博客" type="application/atom+xml">
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/02/Technical-principle/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>前端技术原理 | 卡牌大叔的博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">卡牌大叔的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/02/Technical-principle/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="卡牌大叔">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="卡牌大叔的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">前端技术原理
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-02 23:42:42" itemprop="dateCreated datePublished" datetime="2019-04-02T23:42:42+08:00">2019-04-02</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-06-03 00:08:42" itemprop="dateModified" datetime="2019-06-03T00:08:42+08:00">2019-06-03</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="reactNative-原理"><a href="#reactNative-原理" class="headerlink" title="reactNative 原理"></a>reactNative 原理</h2><p>说明：没有Andorid，ios，c++底层分析功力无法完全通透</p>
+<p>React Native桥接器初探<a href="https://segmentfault.com/a/1190000008478076" target="_blank" rel="noopener">link</a> <a href="https://www.jianshu.com/p/17d6f6c57a5c" target="_blank" rel="noopener">link</a></p>
+<p><img src="/images/yl3.png">  <img src="/images/yl4.png"></p>
+<ul>
+<li><p>React Native 渲染</p>
+<p>在 React 框架中，JSX 源码通过 React 框架最终渲染到了浏览器的真实 DOM 中，而在 React Native 框架中，JSX 源码通过 React Native 框架编译后，通过对应平台的 Bridge 实现了与原生框架的通信。如果我们在程序中调用了 React Native 提供的 API，那么 React Native 框架就通过 Bridge 调用原生框架中的方法。</p>
+</li>
+</ul>
+<p>JavaScriptCore是一个C++ vm。使用Apple提供的JavaScriptCore框架，你可以在Objective-C或者基于C的程序中执行Javascript代码，也可以向JavaScript环境中插入一些自定义的对象。JavaScriptCore从iOS 7.0之后可以直接使用。</p>
+<p>因为 React Native 的底层为 React 框架，所以如果是 UI 层的变更，那么就映射为虚拟 DOM 后进行 diff 算法，diff 算法计算出变动后的 JSON 映射文件，最终由 Native 层将此 JSON 文件映射渲染到原生 App 的页面元素上，最终实现了在项目中只需要控制 state 以及 props 的变更来引起 iOS 与 Android 平台的 UI 变更。</p>
+<p>编写的 React Native代码最终会打包生成一个 main.bundle.js 文件供 App 加载，此文件可以在 App 设备本地，也可以存放于服务器上供 App 下载更新，热更新就会涉及到 main.bundle.js 位置的设置问题。</p>
+<ul>
+<li>优点：</li>
+</ul>
+<p>1.复用了 React 的思想，有利于前端开发者涉足移动端<br>2.能够利用 JavaScript 动态更新的特性，快速迭代<br>3.相比于原生平台，开发速度更快，相比于 Hybrid 框架，性能更好</p>
+<ul>
+<li>缺点</li>
+</ul>
+<ol>
+<li>开发者依然要为 iOS 和 Android 两个平台提供两套不同的代。有组件是区分平台的，即使是共用组件，也会有平台独享的函数。</li>
+<li>不能做到完全屏蔽 iOS 端或 Android端，前端开发者必须对原生平台有所了解。</li>
+<li>由于 Objective-C 与 JavaScript 之间的切换存在固定的时间开销，所以性能必定不及原生。(比如目前的官方版本无法做到 UItableview(ListView) 的视图重用，因为滑动过程中，视图重用需要在异步线程中执行，速度太慢。这也就导致随着 Cell 数量的增加，占用的内存也线性增加。)</li>
+</ol>
+<ul>
+<li>React Native 交互原理总结</li>
+</ul>
+<p>Objective-C 有 <code>JavaScript Core</code> 框架用来执行 JavaScript 代码。<br>JavaScript 通过配置表生成类，方法，参数三个元素，放入消息队列，Objective-C获取之后，<br>就可以唯一确定要调用的是哪个Objective-C函数，然后调用</p>
+<h2 id="babel-原理，抽象语法树如何产生？"><a href="#babel-原理，抽象语法树如何产生？" class="headerlink" title="babel 原理，抽象语法树如何产生？"></a>babel 原理，抽象语法树如何产生？</h2><ol>
+<li>将整个代码字符串分割成 语法单元  数组， 最小语法单元包含。</li>
+</ol>
+<ul>
+<li>空白：JS中连续的空格、换行、缩进等</li>
+<li>注释：行注释或块注释    </li>
+<li>字符串</li>
+<li>数字 16、10、8进制以及科学表达法等数字表达语法</li>
+<li>标识符，没有被引号括起来的的连续字符，包含字母，_，数字，常量 true，false，if , return, function</li>
+<li>运算符 +、-、*、/、&gt;、&lt;</li>
+<li>括号 （ ）， 大扩招，冒号，分好，点，等等   </li>
+</ul>
+<p>拆分过程就是 一个字符一个字符地遍历，然后分情况讨论，整个实现方法就是顺序遍历和大量的条件判断。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="number">1</span> &gt; <span class="number">0</span>) &#123;</span><br><span class="line">  alert(<span class="string">"if \"1 &gt; 0\""</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="string">'if'</span>     <span class="string">' '</span>       <span class="string">'('</span>    <span class="string">'1'</span>      <span class="string">' '</span>    <span class="string">'&gt;'</span>    <span class="string">' '</span>    <span class="string">')'</span>    <span class="string">' '</span>    <span class="string">'&#123;'</span></span><br><span class="line"><span class="string">'\n  '</span>   <span class="string">'alert'</span>   <span class="string">'('</span>    <span class="string">'"if \"1 &gt; 0\""'</span>    <span class="string">')'</span>    <span class="string">';'</span>    <span class="string">'\n'</span>   <span class="string">'&#125;'</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">tokenizeCode</span>(<span class="params">code</span>)</span>&#123;</span><br><span class="line">   <span class="keyword">const</span> tokens = [];</span><br><span class="line">   <span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;code.length;i++)&#123;</span><br><span class="line">      <span class="comment">//从0开始，一个字符一个字符读取</span></span><br><span class="line">      <span class="keyword">let</span> currentChar = code.charAt(i);</span><br><span class="line">      <span class="keyword">if</span>(currentChar === <span class="string">';'</span>)&#123;</span><br><span class="line">         tokens.push(&#123;</span><br><span class="line">            type:<span class="string">'sep'</span>,</span><br><span class="line">            value:<span class="string">';'</span></span><br><span class="line">         &#125;)</span><br><span class="line">         <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(currentChar === <span class="string">'('</span>|| currentChar===<span class="string">')'</span>)&#123;</span><br><span class="line">         tokens.push(&#123;</span><br><span class="line">            type:<span class="string">'parens'</span>,</span><br><span class="line">            value:currentChar</span><br><span class="line">         &#125;)</span><br><span class="line">         <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(currentChar ===<span class="string">'&#125;'</span> || currentChar===<span class="string">'&#123;'</span>)&#123;</span><br><span class="line">         tokens.push(&#123;</span><br><span class="line">            type:<span class="string">'brace'</span>,</span><br><span class="line">            value:currentChar</span><br><span class="line">         &#125;);</span><br><span class="line">         <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(currentChar ===<span class="string">'&gt;'</span> || currentChar===<span class="string">'&lt;'</span>)&#123;</span><br><span class="line">         tokens.push(&#123;</span><br><span class="line">            type:<span class="string">'operator'</span>,</span><br><span class="line">            value:currentChar</span><br><span class="line">         &#125;);</span><br><span class="line">         <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(currentChar === <span class="string">'"'</span> || currentChar ===<span class="string">'\''</span>)&#123;</span><br><span class="line">         <span class="keyword">const</span> token = &#123;</span><br><span class="line">            type:<span class="string">'string'</span>,</span><br><span class="line">            value:currentChar</span><br><span class="line">         &#125;;</span><br><span class="line">         tokens.push(token);</span><br><span class="line">         <span class="keyword">const</span> closer = currentChar;</span><br><span class="line">         <span class="keyword">let</span> escaped = <span class="literal">false</span>;</span><br><span class="line">         <span class="comment">//嵌套循环遍历，寻找字符串结尾</span></span><br><span class="line">         <span class="keyword">for</span>(i++;i&lt;code.length;i++)&#123;</span><br><span class="line">            currentChar = code.charAt(i);</span><br><span class="line">            token.value += currentChar;</span><br><span class="line">            <span class="keyword">if</span>(escaped) &#123;</span><br><span class="line">               escaped = <span class="literal">false</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>( currentChar === <span class="string">'\\'</span>)&#123;</span><br><span class="line">               escaped = <span class="literal">true</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>( currentChar === closer) &#123;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(<span class="regexp">/[0-9]/</span>.test(currentChar))&#123;</span><br><span class="line">         <span class="keyword">const</span> token = &#123;</span><br><span class="line">            type:<span class="string">'number'</span>,</span><br><span class="line">            value:currentChar</span><br><span class="line">         &#125;;</span><br><span class="line">         token.push(token);</span><br><span class="line">         <span class="keyword">for</span>(i++;i&lt;code.length;i++)&#123;</span><br><span class="line">            currentChar = code.charAt(i);</span><br><span class="line">            <span class="keyword">if</span>(<span class="regexp">/[0-9\.]/</span>.test(currentChar))&#123;</span><br><span class="line">               token.value += currentChar;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               i--;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(<span class="regexp">/[a-zA-Z\$\_]/</span>.test(currentChar))&#123;</span><br><span class="line">         <span class="keyword">const</span> token = &#123;</span><br><span class="line">            type:<span class="string">'identifer'</span>,</span><br><span class="line">            value:currentChar,</span><br><span class="line">         &#125;;</span><br><span class="line">         tokens.push(token)</span><br><span class="line">         <span class="keyword">for</span>(i++;i&lt;code.length;i++)&#123;</span><br><span class="line">            currentChar = code.charAt(i);</span><br><span class="line">            <span class="keyword">if</span>(<span class="regexp">/[a-zA-Z0-9\$\_]/</span>.test(currentChar))&#123;</span><br><span class="line">               token.value +=currentChar;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               i--;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(<span class="regexp">/\s/</span>.test(currentChar))&#123;</span><br><span class="line">         <span class="keyword">const</span> token = &#123;</span><br><span class="line">            type:<span class="string">'whitespace'</span>,</span><br><span class="line">            value:currentChar,</span><br><span class="line">         &#125;;</span><br><span class="line">         token.push(token);</span><br><span class="line">         <span class="keyword">for</span>(i++;i&lt;code.length;i++)&#123;</span><br><span class="line">            currentChar = code.charAt(i);</span><br><span class="line">            <span class="keyword">if</span>(<span class="regexp">/\s]/</span>.test(currentChar))&#123;</span><br><span class="line">               token.value += currentChar;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">               i--;</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">continue</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Unexpected '</span>+currentChar);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> tokens;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>语义分析：在分析结果的基础上分析 语法单元之间的关系</li>
+</ol>
+<p>在编程语言的解析中有两个很相似但是又有区别的重要概念：</p>
+<ul>
+<li>表达式：每个表达式都会产生一个值，它可以放在任何需要一个值的地方</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = (<span class="number">5</span> + <span class="number">6</span>) / <span class="number">2</span>; <span class="comment">//表达式：(5 + 6) / 2</span></span><br><span class="line"><span class="keyword">var</span> b = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="keyword">return</span> <span class="number">25</span>;&#125;)(); <span class="comment">//表达式： (function()&#123; return 25;&#125;)()</span></span><br><span class="line">foo(a*b); <span class="comment">//表达式：a*b</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>语句： 是由“；（分号）”分隔的句子或命令。如果在表达式后面加上一个“；”分隔符，这就被称为“表达式语句”。它表明“只有表达式，而没有其他语法元素的语句”。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">9</span>; <span class="comment">//声明、赋值语句</span></span><br><span class="line">vloop: <span class="comment">//标签语句</span></span><br><span class="line">&#123;    <span class="comment">//其实这里大括号可以不需要的，在这里我只想向大家展示一下这种代码块结构而已</span></span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">1</span>; i&lt;<span class="number">10</span>; i++) &#123; <span class="comment">//循环语句</span></span><br><span class="line">            <span class="keyword">if</span>(i==num)&#123; <span class="comment">//条件语句</span></span><br><span class="line">                  <span class="keyword">break</span> vloop;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                  num = num - <span class="number">1</span>; </span><br><span class="line">            &#125;      </span><br><span class="line">     &#125;  </span><br><span class="line">&#125;     </span><br><span class="line"><span class="built_in">console</span>.log(num); <span class="comment">//表达式语句，输出：5</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">* 如何语法分析</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* stash()函数暂存当前的i，nextToken()读取一下个符号 token[i]</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">* 1， 判断if语句:</span></span><br><span class="line"><span class="comment">*   如果curToken.type为标识符，为if, nextToken()紧接着读取下一个token,</span></span><br><span class="line"><span class="comment">*    如果token类型不是空格，或者不是 '（', 抛出错误</span></span><br><span class="line"><span class="comment">*   后续statement.test = nextExpression() 的一个表达式是if的判断条件，递归找出if内的表达式</span></span><br><span class="line"><span class="comment">*   nextToken()</span></span><br><span class="line"><span class="comment">*   如果后续token类型不是空格或者不是'）'，抛出错误</span></span><br><span class="line"><span class="comment">*   statement.consequent = nextStatement() (无限递归)找出下一个语句是if成立时执行的语句</span></span><br><span class="line"><span class="comment">*</span></span><br><span class="line"><span class="comment">*    如果下一个符号是 else 就说明还存在 if 不成立时的逻辑</span></span><br><span class="line"><span class="comment">*   if (curToken === 'identifier' &amp;&amp; curToken.value === 'else') &#123;</span></span><br><span class="line"><span class="comment">        statement.alternative = nextStatement();</span></span><br><span class="line"><span class="comment">     &#125; else &#123;</span></span><br><span class="line"><span class="comment">           statement.alternative = null;</span></span><br><span class="line"><span class="comment">     &#125;</span></span><br><span class="line"><span class="comment">     commit(); 上一个暂存点销毁，不再需要了。</span></span><br><span class="line"><span class="comment">     return statement</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">  2 判断如果是curToken.type === 'brace' &amp;&amp; curToken.value ==="&#123;"</span></span><br><span class="line"><span class="comment">  *  认为是 &#123; block代码块</span></span><br><span class="line"><span class="comment">  *  statement = &#123; type:'BlockStatement',body:[],&#125;</span></span><br><span class="line"><span class="comment">  *  statsh(); nextToken();</span></span><br><span class="line"><span class="comment">  *  if (curToken.type === 'brace' &amp;&amp; curToken.value === '&#125;') &#123; commit(); //表示代码块结束&#125;</span></span><br><span class="line"><span class="comment">  * rewind(); //回到原来位置</span></span><br><span class="line"><span class="comment">        statement.body.push(nextStatement()); //递归，寻找block代码块中的语句or表达式</span></span><br><span class="line"><span class="comment">* */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">parse</span> (<span class="params">tokens</span>) </span>&#123;</span><br><span class="line">   <span class="keyword">let</span> i = <span class="number">-1</span>;</span><br><span class="line">   <span class="keyword">let</span> curToken;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">nextStatement</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      stash();</span><br><span class="line">      nextToken();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(curToken.type === <span class="string">'identifier'</span> &amp;&amp; curToken.value ===<span class="string">'if'</span>)&#123;</span><br><span class="line">         <span class="comment">//解析 if 语句</span></span><br><span class="line">         <span class="keyword">const</span> statement = &#123;</span><br><span class="line">            type:<span class="string">'IfStatement'</span>,</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">         nextToken();</span><br><span class="line">         <span class="keyword">if</span> (curToken.type !== <span class="string">'parens'</span> || curToken.value !== <span class="string">'('</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected ( after if'</span>);</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">         <span class="comment">// 后续的一个表达式是 if 的判断条件</span></span><br><span class="line">         statement.test = nextExpression();</span><br><span class="line">         <span class="comment">// 判断条件之后必须是 )</span></span><br><span class="line">         nextToken();</span><br><span class="line">         <span class="keyword">if</span>(curToken.type!==<span class="string">'parens'</span> || curToken.value!==<span class="string">')'</span>)&#123;</span><br><span class="line">            <span class="keyword">throw</span>  <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected ) after if test expression'</span>);</span><br><span class="line">         &#125;</span><br><span class="line">         statement.consequent = nextStatement();</span><br><span class="line">         <span class="keyword">if</span>(curToken === <span class="string">'identifier'</span> &amp;&amp; curToken.value ===<span class="string">'else'</span>)&#123;</span><br><span class="line">            statement.alternative = nextStatement();</span><br><span class="line">         &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            statement.alternative = <span class="literal">null</span>;</span><br><span class="line">         &#125;</span><br><span class="line">         commit();</span><br><span class="line">         <span class="keyword">return</span> statement;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(curToken.type ===<span class="string">'brace'</span> &amp;&amp; curToken.value ===<span class="string">'&#123;'</span>)&#123;</span><br><span class="line">         <span class="comment">// 以 &#123; 开头表示是个代码块，我们暂不考虑JSON语法的存在</span></span><br><span class="line">         <span class="keyword">const</span> statement = &#123;</span><br><span class="line">            type: <span class="string">'BlockStatement'</span>,</span><br><span class="line">            body: [],</span><br><span class="line">         &#125;;</span><br><span class="line">         <span class="keyword">while</span> (i&lt;tokens.length)&#123;</span><br><span class="line">            <span class="comment">// 检查下一个符号是不是 &#125;</span></span><br><span class="line">            stash();</span><br><span class="line">            nextToken();</span><br><span class="line">            <span class="keyword">if</span>(curToken.type===<span class="string">'brace'</span>&amp;&amp;curToken.value ===<span class="string">"&#125;"</span>)&#123;</span><br><span class="line">               commit();</span><br><span class="line">               <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            rewind();</span><br><span class="line">            statement.body.push(nextStatement());</span><br><span class="line">         &#125;</span><br><span class="line">         commit();</span><br><span class="line">         <span class="keyword">return</span> statement;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      rewind();</span><br><span class="line">      <span class="keyword">const</span> statement = &#123;</span><br><span class="line">         type:<span class="string">'ExpressionStatement'</span>,</span><br><span class="line">         expression:nextExpression(),</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">if</span>(statement.expression)&#123;</span><br><span class="line">         nextToken();</span><br><span class="line">         <span class="keyword">if</span> (curToken.type !== <span class="string">'EOF'</span> &amp;&amp; curToken.type !== <span class="string">'sep'</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Missing ; at end of expression'</span>);</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="keyword">return</span> statement;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 读取下一个表达式</span></span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">nextExpression</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      nextToken();</span><br><span class="line">      <span class="keyword">if</span> (curToken.type === <span class="string">'identifier'</span>) &#123;</span><br><span class="line">         <span class="keyword">const</span> identifier = &#123;</span><br><span class="line">            type: <span class="string">'Identifier'</span>,</span><br><span class="line">            name: curToken.value,</span><br><span class="line">         &#125;;</span><br><span class="line">         stash();</span><br><span class="line">         nextToken();</span><br><span class="line">         <span class="keyword">if</span> (curToken.type === <span class="string">'parens'</span> &amp;&amp; curToken.value === <span class="string">'('</span>) &#123;</span><br><span class="line">            <span class="comment">// 如果一个标识符后面紧跟着 ( ，说明是个函数调用表达式</span></span><br><span class="line">            <span class="keyword">const</span> expr = &#123;</span><br><span class="line">               type: <span class="string">'CallExpression'</span>,</span><br><span class="line">               caller: identifier,</span><br><span class="line">               <span class="built_in">arguments</span>: [],</span><br><span class="line">            &#125;;</span><br><span class="line">            stash();</span><br><span class="line">            nextToken();</span><br><span class="line">            <span class="keyword">if</span> (curToken.type === <span class="string">'parens'</span> &amp;&amp; curToken.value === <span class="string">')'</span>) &#123;</span><br><span class="line">               <span class="comment">// 如果下一个符合直接就是 ) ，说明没有参数</span></span><br><span class="line">               commit();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               <span class="comment">// 读取函数调用参数</span></span><br><span class="line">               rewind();</span><br><span class="line">               <span class="keyword">while</span> (i &lt; tokens.length) &#123;</span><br><span class="line">                  <span class="comment">// 将下一个表达式加到arguments当中</span></span><br><span class="line">                  expr.arguments.push(nextExpression());</span><br><span class="line">                  nextToken();</span><br><span class="line">                  <span class="comment">// 遇到 ) 结束</span></span><br><span class="line">                  <span class="keyword">if</span> (curToken.type === <span class="string">'parens'</span> &amp;&amp; curToken.value === <span class="string">')'</span>) &#123;</span><br><span class="line">                     <span class="keyword">break</span>;</span><br><span class="line">                  &#125;</span><br><span class="line">                  <span class="comment">// 参数间必须以 , 相间隔</span></span><br><span class="line">                  <span class="keyword">if</span> (curToken.type !== <span class="string">'comma'</span> &amp;&amp; curToken.value !== <span class="string">','</span>) &#123;</span><br><span class="line">                     <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Expected , between arguments'</span>);</span><br><span class="line">                  &#125;</span><br><span class="line">               &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            commit();</span><br><span class="line">            <span class="keyword">return</span> expr;</span><br><span class="line">         &#125;</span><br><span class="line">         rewind();</span><br><span class="line">         <span class="keyword">return</span> identifier;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (curToken.type === <span class="string">'number'</span> || curToken.type === <span class="string">'string'</span>) &#123;</span><br><span class="line">         <span class="comment">// 数字或字符串，说明此处是个常量表达式</span></span><br><span class="line">         <span class="keyword">const</span> literal = &#123;</span><br><span class="line">            type: <span class="string">'Literal'</span>,</span><br><span class="line">            value: <span class="built_in">eval</span>(curToken.value),</span><br><span class="line">         &#125;;</span><br><span class="line">         <span class="comment">// 但如果下一个符号是运算符，那么这就是个双元运算表达式</span></span><br><span class="line">         <span class="comment">// 此处暂不考虑多个运算衔接，或者有变量存在</span></span><br><span class="line">         stash();</span><br><span class="line">         nextToken();</span><br><span class="line">         <span class="keyword">if</span> (curToken.type === <span class="string">'operator'</span>) &#123;</span><br><span class="line">            commit();</span><br><span class="line">            <span class="keyword">return</span> &#123;</span><br><span class="line">               type: <span class="string">'BinaryExpression'</span>,</span><br><span class="line">               left: literal,</span><br><span class="line">               right: nextExpression(),</span><br><span class="line">            &#125;;</span><br><span class="line">         &#125;</span><br><span class="line">         rewind();</span><br><span class="line">         <span class="keyword">return</span> literal;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (curToken.type !== <span class="string">'EOF'</span>) &#123;</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Unexpected token '</span> + curToken.value);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   </span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">nextToken</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="keyword">do</span>&#123;</span><br><span class="line">         i++;</span><br><span class="line">         curToken = tokens[i] || &#123; <span class="attr">type</span>:<span class="string">'EOF'</span> &#125;</span><br><span class="line">      &#125;<span class="keyword">while</span> (curToken.type===<span class="string">'whitespace'</span>);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">const</span> stashStack = [];</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">stash</span>(<span class="params">cb</span>)</span>&#123;</span><br><span class="line">      stashStack.push(i);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">rewind</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      i = stashStack.pop();</span><br><span class="line">      curToken = tokens[i];</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">function</span> <span class="title">commit</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      stashStack.pop()</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">const</span> ast = &#123;</span><br><span class="line">      type:<span class="string">'Program'</span>,</span><br><span class="line">      body:[]</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">while</span> (i&lt;tokens.length)&#123;</span><br><span class="line">      <span class="keyword">const</span> statement = nextStatement();</span><br><span class="line">      <span class="keyword">if</span>(!statement)&#123; <span class="keyword">break</span>; &#125;</span><br><span class="line">      ast.body.push(statement);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> ast;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="webpack-原理"><a href="#webpack-原理" class="headerlink" title="webpack 原理"></a>webpack 原理</h2><p>实现一个简单的webpack <a href="https://segmentfault.com/a/1190000015225750" target="_blank" rel="noopener">link</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> mainFile = parse(config.entry, <span class="literal">true</span>) <span class="comment">//babylon.parse 返回入口js文件的AST抽象语法树，依赖</span></span><br><span class="line"><span class="keyword">return</span> &#123;</span><br><span class="line">    fileName,</span><br><span class="line">    dependence: getDependence(ast),</span><br><span class="line">    code: getTranslateCode(ast),</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> queue = getQueue(mainFile) <span class="comment">//分析递归主文件依赖，返回文件依赖的字面量树。</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'queue'</span>,queue);</span><br><span class="line"><span class="keyword">return</span> bundle(queue) ;<span class="comment">//打包所有js到一个文件。</span></span><br><span class="line"></span><br><span class="line">===== </span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> babylon = <span class="built_in">require</span>(<span class="string">'babylon'</span>);</span><br><span class="line"><span class="keyword">const</span> traverse = <span class="built_in">require</span>(<span class="string">'babel-traverse'</span>).default;</span><br><span class="line"><span class="keyword">const</span> &#123;transformFromAst&#125; = <span class="built_in">require</span>(<span class="string">'babel-core’);</span></span><br><span class="line"><span class="string">const loaderUtils = require('</span>loader-utils<span class="string">')</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">let config = &#123;&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">//fs.readFileSync获取源代码，在转换成ast之前执行loader </span></span><br><span class="line"><span class="string">function getSource(modulePath)&#123;</span></span><br><span class="line"><span class="string">    try&#123;</span></span><br><span class="line"><span class="string">        let rules = this.config.module.rules</span></span><br><span class="line"><span class="string">        const content = fs.readFileSync(modulePath, '</span>utf<span class="number">-8</span><span class="string">') //读取源文件</span></span><br><span class="line"><span class="string">        for(let i = 0;i&lt;rules.length;i++)&#123;</span></span><br><span class="line"><span class="string">            let &#123;test, use &#125; = rules[i]</span></span><br><span class="line"><span class="string">            let len = use.length -1</span></span><br><span class="line"><span class="string">            if(test.test(modulePath))&#123;</span></span><br><span class="line"><span class="string">                //递归处理所有loader</span></span><br><span class="line"><span class="string">                function loopLoader() &#123;</span></span><br><span class="line"><span class="string">                    let loader = require(use[len--])</span></span><br><span class="line"><span class="string">                    let content = loader(content);</span></span><br><span class="line"><span class="string">                    if(len&gt;=0)&#123;</span></span><br><span class="line"><span class="string">                        loopLoader()</span></span><br><span class="line"><span class="string">                    &#125;</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">                loopLoader()</span></span><br><span class="line"><span class="string">            &#125;</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        return content</span></span><br><span class="line"><span class="string">    &#125;catch (e) &#123;</span></span><br><span class="line"><span class="string">        throw new Error(`获取数据错误 : $&#123;modulePath&#125;`)</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/**</span></span><br><span class="line"><span class="string"> * 获取文件，解析成ast语法</span></span><br><span class="line"><span class="string"> * @param filename</span></span><br><span class="line"><span class="string"> * @returns &#123;*&#125;</span></span><br><span class="line"><span class="string"> */</span></span><br><span class="line"><span class="string">function getAst (source) &#123;</span></span><br><span class="line"><span class="string">  const content = source</span></span><br><span class="line"><span class="string">  return babylon.parse(content, &#123;</span></span><br><span class="line"><span class="string">    sourceType: '</span><span class="built_in">module</span><span class="string">',</span></span><br><span class="line"><span class="string">  &#125;);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">function getDependence (ast) &#123;</span></span><br><span class="line"><span class="string">  let dependencies = []</span></span><br><span class="line"><span class="string">  traverse(ast, &#123;</span></span><br><span class="line"><span class="string">    ImportDeclaration: (&#123;node&#125;) =&gt; &#123;</span></span><br><span class="line"><span class="string">      dependencies.push(node.source.value);</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">  &#125;)</span></span><br><span class="line"><span class="string">  console.log('</span>dependencies<span class="string">',dependencies);</span></span><br><span class="line"><span class="string">  return dependencies</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/**</span></span><br><span class="line"><span class="string"> * 编译</span></span><br><span class="line"><span class="string"> * @param ast</span></span><br><span class="line"><span class="string"> * @returns &#123;*&#125;</span></span><br><span class="line"><span class="string"> */</span></span><br><span class="line"><span class="string">function getTranslateCode(ast) &#123;</span></span><br><span class="line"><span class="string">  const &#123;code&#125; = transformFromAst(ast, null, &#123;</span></span><br><span class="line"><span class="string">    presets: ['</span>env<span class="string">']</span></span><br><span class="line"><span class="string">  &#125;);</span></span><br><span class="line"><span class="string">  console.log('</span>code<span class="string">',code);</span></span><br><span class="line"><span class="string">  return code</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/**</span></span><br><span class="line"><span class="string"> * 生成完整的文件依赖关系映射</span></span><br><span class="line"><span class="string"> * @param fileName</span></span><br><span class="line"><span class="string"> * @param entry</span></span><br><span class="line"><span class="string"> * @returns &#123;&#123;fileName: *, dependence, code: *&#125;&#125;</span></span><br><span class="line"><span class="string"> */</span></span><br><span class="line"><span class="string">function parse(fileName, entry) &#123;</span></span><br><span class="line"><span class="string">  let filePath = fileName.indexOf('</span>.js<span class="string">') === -1 ? fileName + '</span>.js<span class="string">' : fileName</span></span><br><span class="line"><span class="string">  let dirName = entry ? '</span><span class="string">' : path.dirname(config.entry)</span></span><br><span class="line"><span class="string">  let absolutePath = path.join(dirName, filePath)</span></span><br><span class="line"><span class="string">  let source =this.getSource(absolutePath)</span></span><br><span class="line"><span class="string">  const ast = getAst(source)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  return &#123;</span></span><br><span class="line"><span class="string">    fileName,</span></span><br><span class="line"><span class="string">    dependence: getDependence(ast),</span></span><br><span class="line"><span class="string">    code: getTranslateCode(ast),</span></span><br><span class="line"><span class="string">  &#125;;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">/**</span></span><br><span class="line"><span class="string"> * 获取深度队列依赖关系</span></span><br><span class="line"><span class="string"> * @param main</span></span><br><span class="line"><span class="string"> * @returns &#123;*[]&#125;</span></span><br><span class="line"><span class="string"> */</span></span><br><span class="line"><span class="string">function getQueue(main) &#123;</span></span><br><span class="line"><span class="string">  let queue = [main]</span></span><br><span class="line"><span class="string">  for (let asset of queue) &#123;</span></span><br><span class="line"><span class="string">    asset.dependence.forEach(function (dep) &#123;</span></span><br><span class="line"><span class="string">      let child = parse(dep)</span></span><br><span class="line"><span class="string">      queue.push(child)</span></span><br><span class="line"><span class="string">    &#125;)</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">  return queue</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">function bundle(queue) &#123;</span></span><br><span class="line"><span class="string">  let modules = '</span><span class="string">'</span></span><br><span class="line"><span class="string">  queue.forEach(function (mod) &#123;</span></span><br><span class="line"><span class="string">    modules += `'</span>$&#123;mod.fileName&#125;<span class="string">': function (require, module, exports) &#123; $&#123;mod.code&#125; &#125;,`</span></span><br><span class="line"><span class="string">  &#125;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  const result = `</span></span><br><span class="line"><span class="string">    (function(modules) &#123;</span></span><br><span class="line"><span class="string">      function require(fileName) &#123;</span></span><br><span class="line"><span class="string">        const fn = modules[fileName];</span></span><br><span class="line"><span class="string">        const module = &#123; exports : &#123;&#125; &#125;;</span></span><br><span class="line"><span class="string">        fn(require, module, module.exports);</span></span><br><span class="line"><span class="string">        return module.exports;</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">      require('</span>$&#123;config.entry&#125;<span class="string">');</span></span><br><span class="line"><span class="string">    &#125;)(&#123;$&#123;modules&#125;&#125;)</span></span><br><span class="line"><span class="string">  `;</span></span><br><span class="line"><span class="string">  // We simply return the result, hurray! :)</span></span><br><span class="line"><span class="string">  return result;</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">//option tinypack.config.js</span></span><br><span class="line"><span class="string">function bundleFile(option) &#123;</span></span><br><span class="line"><span class="string">  console.log(option)</span></span><br><span class="line"><span class="string">  config = option</span></span><br><span class="line"><span class="string">  let mainFile = parse(config.entry, true) //返回入口js文件的AST抽象语法树，依赖</span></span><br><span class="line"><span class="string">  let queue = getQueue(mainFile) //递归主文件依赖，返回文件依赖的字面量树。</span></span><br><span class="line"><span class="string">  console.log('</span>queue<span class="string">',queue);</span></span><br><span class="line"><span class="string">  return bundle(queue) ;//打包所有js到一个文件。</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">module.exports = bundleFile</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">`</span></span><br></pre></td></tr></table></figure>
+<h2 id="DIFF-算法实现-原理"><a href="#DIFF-算法实现-原理" class="headerlink" title="DIFF 算法实现 原理"></a>DIFF 算法实现 原理</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123;StateEnums,isString, move &#125; <span class="keyword">from</span> ‘./util’</span><br><span class="line"><span class="keyword">import</span> Element <span class="keyword">from</span> ‘./element’</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">diff</span>(<span class="params">oldDomTree, newDomTree</span>)</span>&#123; </span><br><span class="line">    <span class="keyword">let</span> patches = &#123; &#125; <span class="comment">//记录差异</span></span><br><span class="line">    dfs(oldDomTree, newDomTree, <span class="number">0</span>, patches)</span><br><span class="line">    <span class="keyword">return</span> patches</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//树递归</span></span><br><span class="line"><span class="comment">//①，比较新旧节点,</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dfs</span>(<span class="params">oldNode, newNode, index, patches</span>)</span>&#123; </span><br><span class="line">    <span class="keyword">let</span> curPatches = [ ] <span class="comment">//用于保存子树更改</span></span><br><span class="line">    <span class="comment">// 需要判断三种情况</span></span><br><span class="line">    <span class="comment">/*1.没有新的节点，什么都不做</span></span><br><span class="line"><span class="comment">      2.新的节点 tagName和 key(可能没有) 和旧的相同，开始比较属性是否相同，如果不同则入栈属性改变状态，</span></span><br><span class="line"><span class="comment">      (diffProps 比较属性。</span></span><br><span class="line"><span class="comment">         * 遍历旧节点的属性key，如果旧节点属性key 新节点没有这个key，入栈属prop key (说明删除了)</span></span><br><span class="line"><span class="comment">         * 遍历新节点尚属性key,若旧节点存在key,比较新旧vlue值，oldprops[key] !== 新节点props[key], 入栈 新节点key,新节点 value（说明添加了key）</span></span><br><span class="line"><span class="comment">     若不存在oldProps[key], 入栈新 &#123;prop:key,value:newProps&#125;     </span></span><br><span class="line"><span class="comment">      )</span></span><br><span class="line"><span class="comment">      开始遍历子树, diffChildren(oldNode.children, newNode.children, index, patches)&#123; </span></span><br><span class="line"><span class="comment">         let &#123; changes, list &#125; = listDiff ( oldChild, newChild, index, patches )</span></span><br><span class="line"><span class="comment">     //判断列表差异算法实现 Vitual Dom核心算法</span></span><br><span class="line"><span class="comment">    /*</span></span><br><span class="line"><span class="comment">     * 迭代oldList,找到oldlist的节点key,声明一个临时栈oldlistTemp，声明change栈</span></span><br><span class="line"><span class="comment">     如果oldList节点存在的key newList不存在，说明oldList此节点key被删除，入栈null到oldKeyTemp里</span></span><br><span class="line"><span class="comment">     如果都存在key相当说明 子树上存在相同节点，只用对比两个节点是否需要运动, 入栈key到oldKeyTemp里</span></span><br><span class="line"><span class="comment">     * 迭代oldKeyTemp, 发现有null，入栈change.push(&#123;type:StateEnums.Remove, index:i&#125;)</span></span><br><span class="line"><span class="comment">     * 迭代newlist,找到节点key,</span></span><br><span class="line"><span class="comment">    如果存在oldKeyTemp[key]，说明这个节点从旧到新没有发生操作，</span></span><br><span class="line"><span class="comment">      但需要判断节点树层级，如果index!=i 入栈 changes.push(&#123; type:StateEnums.Move, from:index,to:i &#125;)，移动节点</span></span><br><span class="line"><span class="comment">    如果不存在oldkeyTemp.indexOf(key) === -1, 说明这个节点是个新节点，</span></span><br><span class="line"><span class="comment">    入栈 changes.push(&#123; type:StateEnums.Insert, node:item, index:i&#125;) oldKeyTemp添加此key</span></span><br><span class="line"><span class="comment">      listDiff方法返回 &#123; changes, oldListTemp &#125;</span></span><br><span class="line"><span class="comment">      </span></span><br><span class="line"><span class="comment">      diffChildren中拿到change,list, 合并更改到patches里。 再次比较新旧节点，如果新节点存在字子节点，递归dfs重复上面过程</span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">    dfs返回所有节点的替换，删除，移动信息。</span></span><br><span class="line"><span class="comment">   </span></span><br><span class="line"><span class="comment">      </span></span><br><span class="line"><span class="comment">   3.新的节点的tagName和 ‘key’ 和旧的不同，就替换所有树，不需遍历旧节点子元素，因为整个节点都被替换掉了，入栈节点替换状态</span></span><br><span class="line"><span class="comment">      </span></span><br><span class="line"><span class="comment">   最后调用patch(root, diffs), 应用更新，由于更新用的都是无关dom操作的api,完成替换。</span></span><br><span class="line"><span class="comment">   StateEnums.ChangeProps/remove/move/insert</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">      </span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="keyword">if</span>(!newNode)&#123; &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(newNode.tag===oldNode.tag &amp;&amp; newNode.key === oldNode.key)&#123; </span><br><span class="line">        <span class="comment">//判断属性是否变更</span></span><br><span class="line">        <span class="keyword">let</span> props = diffProps(oldNode.props, newNode.props)</span><br><span class="line">        <span class="keyword">if</span>(props.length) curPatches.push(&#123; <span class="attr">type</span>:StateEnums.ChangeProps, props &#125;)</span><br><span class="line">        <span class="comment">//遍历子树</span></span><br><span class="line">        diffChildren(oldNode.children, newNode.children, index, patches )</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123; </span><br><span class="line">        <span class="comment">//节点不同，需要替换</span></span><br><span class="line">        curPatches.push(&#123; <span class="attr">type</span>:StateEnums.Replace, <span class="attr">node</span>:newNode &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(curPatches.length)&#123; </span><br><span class="line">        <span class="keyword">if</span>(patches[index])&#123; </span><br><span class="line">            patches[index] = patches[index].concat[curPatches]</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123; </span><br><span class="line">            patches[index] = curPatches </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断属性的更改</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">   1 遍历旧节点的属性key，如果旧节点属性key 新节点没有这个key，入栈属prop key (说明删除了)</span></span><br><span class="line"><span class="comment">   2 遍历新节点尚属性key,若旧节点存在key,比较新旧vlue值，oldprops[key] !== 新节点props[key], 入栈 新节点key,新节点 value（说明添加了key）</span></span><br><span class="line"><span class="comment">     若不存在oldProps[key], 入栈新 &#123;prop:key,value:newProps&#125;   </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">diffProps</span> (<span class="params">oldProps, newProps</span>)</span>&#123; </span><br><span class="line">    <span class="keyword">let</span> change = []</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">const</span> key <span class="keyword">in</span> oldProps) &#123; </span><br><span class="line">        <span class="keyword">if</span>(oldProps.hasOwnProperty(key) &amp;&amp;!newProps[key])&#123; </span><br><span class="line">            change.push(&#123; <span class="attr">prop</span>:key &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">const</span> key <span class="keyword">in</span> newProps)&#123; </span><br><span class="line">        <span class="keyword">if</span>(newProps.hasOwnProperty(key))&#123; </span><br><span class="line">            <span class="keyword">const</span> prop = newProps[key]</span><br><span class="line">            <span class="keyword">if</span>(oldProps[key] &amp;&amp; oldProps[key]!==newProps[key])&#123; </span><br><span class="line">                change.push(&#123; <span class="attr">prop</span>:key, <span class="attr">value</span>:newProps[key] &#125;)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(!oldProps[key])&#123; </span><br><span class="line">            change.push(&#123; <span class="attr">prop</span>:key, <span class="attr">value</span>:newProps &#125;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> change</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//遍历子元素打标识，判断两个列表差异</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">    listDiff 拿到</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">diffChildren</span> (<span class="params">oldChild,newChild,index,patches</span>)</span>&#123; </span><br><span class="line">    <span class="keyword">let</span> &#123; changes, list &#125; = listDiff(oldChild, newChild, index, patches)</span><br><span class="line">    <span class="keyword">if</span>(changes.length)&#123; </span><br><span class="line">        <span class="keyword">if</span>(patches[index])&#123; <span class="comment">//合并更改</span></span><br><span class="line">            patches[index] = patches[index].concat(changes)</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123; </span><br><span class="line">            patches[index] = changes </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">let</span> last = <span class="literal">null</span></span><br><span class="line">    oldChild &amp;&amp; </span><br><span class="line">        oldChild.forEach(<span class="function">(<span class="params">item,i</span>)=&gt;</span>&#123; <span class="comment">//递归看是否仍然有子节点，然后进行dfs操作。</span></span><br><span class="line">            <span class="keyword">let</span> child = item &amp;&amp; item.children</span><br><span class="line">            <span class="keyword">if</span>(child)&#123; </span><br><span class="line">                index = last &amp;&amp; last.children? index+last.children.length+<span class="number">1</span>:index+<span class="number">1</span></span><br><span class="line">                <span class="keyword">let</span> keyIndex = list.indexOf(item.key)</span><br><span class="line">                <span class="keyword">let</span> node = newChild[keyIndex]</span><br><span class="line">                <span class="comment">// 只遍历新旧中都存在的节点，其他新增或者删除的没必要遍历</span></span><br><span class="line">                <span class="keyword">if</span>(node)&#123; </span><br><span class="line">                    dfs(item, node, index, patches) </span><br><span class="line">                &#125;</span><br><span class="line">            &#125; </span><br><span class="line">            <span class="keyword">else</span> </span><br><span class="line">                index+=<span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            last = item</span><br><span class="line">        &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断列表差异算法实现 Vitual Dom核心算法</span></span><br><span class="line"><span class="comment">/* 1 迭代oldList,找到oldlist的节点key,声明一个临时栈oldlistTemp，声明change栈</span></span><br><span class="line"><span class="comment">     如果oldList节点存在的key newList不存在，说明oldList此节点key被删除，入栈null到oldKeyTemp里</span></span><br><span class="line"><span class="comment">     如果都存在key相当说明 子树上存在相同节点，只用对比两个节点是否需要运动, 入栈key到oldKeyTemp里</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   2 迭代oldKeyTemp, 发现有null，入栈change.push(&#123;type:StateEnums.Remove, index:i&#125;)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">   3 迭代newlist,找到节点key,</span></span><br><span class="line"><span class="comment">    如果存在oldKeyTemp[key]，说明这个节点从旧到新没有发生操作，</span></span><br><span class="line"><span class="comment">     但需要判断节点树层级，如果index!=i 入栈 changes.push(&#123; type:StateEnums.Move, from:index,to:i &#125;)，移动节点</span></span><br><span class="line"><span class="comment">    如果不存在oldkeyTemp.indexOf(key) === -1, 说明这个节点是个新节点，</span></span><br><span class="line"><span class="comment">    入栈 changes.push(&#123; type:StateEnums.Insert, node:item, index:i&#125;) oldKeyTemp添加此key</span></span><br><span class="line"><span class="comment">  </span></span><br><span class="line"><span class="comment">listDiff方法返回 &#123; changes, oldListTemp &#125;</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">listDiff</span> (<span class="params">oldList, newList, index, patches</span>)</span>&#123; </span><br><span class="line">    <span class="keyword">let</span> oldKeys = getKeys(oldList)</span><br><span class="line">    <span class="keyword">let</span> newKeys = getKeys(newList)</span><br><span class="line">    <span class="keyword">let</span> change = [ ]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span>  oldkeyTemp = [ ]</span><br><span class="line">    oldList &amp;&amp; </span><br><span class="line">        oldList.forEach(<span class="function"><span class="params">item</span>=&gt;</span>&#123; </span><br><span class="line">            <span class="keyword">let</span> key = item.key</span><br><span class="line">            <span class="keyword">if</span>(isString(item)) &#123; key = item &#125; </span><br><span class="line">            <span class="keyword">let</span> index = newKeys.indexOf(key)</span><br><span class="line">            <span class="keyword">if</span>( index === <span class="number">-1</span>)&#123; </span><br><span class="line">                oldkeyTemp.push(<span class="literal">null</span>)  <span class="comment">//newList不存在key， 说明oldList此节点k被删除，入栈null</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> oldkeyTemp.push(key) <span class="comment">//把newlist, oldlist 都存在的key保留在数组里。</span></span><br><span class="line">        &#125;)</span><br><span class="line">    <span class="comment">//遍历变更后的数组,因为删除数组元素是会更改索引的,所有从后往前删可以保证索引不变, </span></span><br><span class="line">    <span class="comment">//找到null节点，入栈删除操作</span></span><br><span class="line">    <span class="keyword">let</span> length = oldkeyTemp.length</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = length<span class="number">-1</span>; i&gt;<span class="number">0</span>;i--) &#123; </span><br><span class="line">        <span class="keyword">if</span>(!oldkeyTemp[i])&#123; </span><br><span class="line">            oldkeyTemp.splice(i,<span class="number">1</span>); <span class="comment">//把空节点删掉。</span></span><br><span class="line">            changes.push(&#123; <span class="attr">type</span>:StateEnums.Remove, <span class="attr">index</span>:i &#125;)    </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//遍历新的list, 判断是否有节点新增或移动， 同时也对 list 做节点新增和移动节点操作</span></span><br><span class="line">    newList &amp;&amp; </span><br><span class="line">        newList.forEach(<span class="function">(<span class="params">item,i</span>)=&gt;</span>&#123; </span><br><span class="line">            <span class="keyword">let</span> key = item.key</span><br><span class="line">            <span class="keyword">if</span>(isString(item)) &#123; key = item &#125;</span><br><span class="line">            <span class="comment">//寻找旧的children中是否含有当前节点</span></span><br><span class="line">            <span class="keyword">let</span> index = oldkeyTemp.indexOf(key)</span><br><span class="line">            <span class="comment">//如果没有找到新节点，说明此key是一个新的节点，需要插入</span></span><br><span class="line">            <span class="keyword">if</span>(index === <span class="number">-1</span> || key== <span class="literal">null</span>)&#123; </span><br><span class="line">                changes.push(&#123; </span><br><span class="line">                    type:StateEnums.Insert,</span><br><span class="line">                    node:item,</span><br><span class="line">                    index:i</span><br><span class="line">                &#125;)</span><br><span class="line">                oldListTemp.splice(i,<span class="number">0</span>,key) </span><br><span class="line">            &#125; <span class="keyword">else</span> &#123; </span><br><span class="line">                <span class="comment">//找到了，需要判断是否需要移动</span></span><br><span class="line">                <span class="keyword">if</span>(index!==i)&#123; </span><br><span class="line">                  changes.push(&#123; </span><br><span class="line">                    type:StateEnums.Move,</span><br><span class="line">                    <span class="keyword">from</span>:index,</span><br><span class="line">                    to:i</span><br><span class="line">                  &#125;)</span><br><span class="line">                  move(list, index, i)   </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;   </span><br><span class="line">        &#125;)</span><br><span class="line">     <span class="keyword">return</span> &#123; changes, oldListTemp &#125;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getKeys</span> (<span class="params">list</span>)</span>&#123; </span><br><span class="line">    <span class="keyword">let</span> keys = [ ]</span><br><span class="line">    <span class="keyword">let</span> text</span><br><span class="line">    list &amp;&amp; list.forEach(<span class="function"><span class="params">item</span>=&gt;</span>&#123; </span><br><span class="line">        <span class="keyword">let</span> key</span><br><span class="line">        <span class="keyword">if</span>(isString(item)) &#123; key = [item] &#125; <span class="comment">//如果item本身为文本，将文本作为单数组 key</span></span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (item <span class="keyword">instanceof</span> Element) &#123; key = item.key &#125;</span><br><span class="line">        keys.push(key)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">return</span> keys </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//渲染差异 深度遍历树，将需要的变更操作取出来。 局部更新DOM</span></span><br><span class="line"><span class="keyword">let</span> index = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">patch</span>(<span class="params">node,patchs</span>)</span>&#123; </span><br><span class="line">    <span class="keyword">let</span> changes = patchs[index]</span><br><span class="line">    <span class="keyword">let</span> childNodes = node &amp;&amp; node.childNodes</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!childNodes) index += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span>(changes &amp;&amp; changes.length &amp;&amp; patchs[index]) &#123; changeDom (node, changes) &#125;</span><br><span class="line">    <span class="keyword">let</span> last = <span class="literal">null</span></span><br><span class="line">    <span class="keyword">if</span>(childNodes &amp;&amp; childNode.length)&#123; </span><br><span class="line">        childNodes.forEach(<span class="function">(<span class="params">item,i</span>) =&gt;</span> &#123; </span><br><span class="line">            index = last &amp;&amp; last.children ? index +last.children.length+<span class="number">1</span>:index+<span class="number">1</span></span><br><span class="line">            patch(item, patchs);</span><br><span class="line">            last = item</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeDom</span> (<span class="params"> node, changes, noChild</span>) </span>&#123; </span><br><span class="line">    changes &amp;&amp; </span><br><span class="line">        changes.forEach(<span class="function"><span class="params">change</span> =&gt;</span>&#123; </span><br><span class="line">            <span class="keyword">let</span> &#123;type&#125; = change            </span><br><span class="line">            swtich(type) &#123; </span><br><span class="line">                <span class="keyword">case</span> StateEnums.ChangeProps:</span><br><span class="line">                    <span class="keyword">let</span> &#123; props &#125; = change</span><br><span class="line">                    props.forEach( <span class="function"><span class="params">item</span> =&gt;</span> &#123; </span><br><span class="line">                            <span class="keyword">if</span>(item.value) &#123; node.setAttribute(item.prop, item.value) &#125;</span><br><span class="line">                            <span class="keyword">else</span> &#123; node.removeAttribute(item.prop) &#125;</span><br><span class="line">                        &#125;)</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> StateEnums.Remove:</span><br><span class="line">                    node.childNodes[change.index].remove();</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> StateEnums.Insert:</span><br><span class="line">                    <span class="keyword">let</span> dom</span><br><span class="line">                    <span class="keyword">if</span>(isString(change.node))&#123; </span><br><span class="line">                        dom = <span class="built_in">document</span>.createTextNode(change.node)</span><br><span class="line">                    &#125;<span class="keyword">else</span> <span class="keyword">if</span>( change.node <span class="keyword">instanceof</span> Element)&#123; </span><br><span class="line">                        dom = change.node.create()</span><br><span class="line">                    &#125;      </span><br><span class="line">                    node.insertBefore( dom, nodeChildNodes[change.index]) </span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">case</span> StateEnums.Move:</span><br><span class="line">                    <span class="keyword">let</span> fromNode = node.childNodes[change.from]</span><br><span class="line">                    <span class="keyword">let</span> toNode = node.childNodes[change.to]</span><br><span class="line">                    <span class="keyword">let</span> cloneFromNode = fromNode.cloneNode(<span class="literal">true</span>)</span><br><span class="line">                    <span class="keyword">let</span> cloneToNode = toNode.cloneNode(<span class="literal">true</span>)</span><br><span class="line">                    node.replaceChild(cloneFromNode,toNode)</span><br><span class="line">                    node.replaceChild(cloneToNode,fromNode)</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">default</span>:</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> test4 = <span class="keyword">new</span> Element(<span class="string">'div'</span>, &#123; <span class="attr">class</span>: <span class="string">'my-div'</span> &#125;, [<span class="string">'test4’],’key4'</span>)</span><br><span class="line"><span class="keyword">let</span> test5 = <span class="keyword">new</span> Element(<span class="string">'ul'</span>, &#123; <span class="attr">class</span>: <span class="string">'my-div'</span> &#125;, [<span class="string">'test5’],’key5'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> test1 = <span class="keyword">new</span> Element(<span class="string">'div'</span>, &#123; <span class="attr">class</span>: <span class="string">'my-div'</span> &#125;, [test4], ‘key1<span class="string">')</span></span><br><span class="line"><span class="string">let test2 = new Element('</span>div<span class="string">', &#123; id: '</span><span class="number">11</span><span class="string">' &#125;, [test5, test4], ‘key2'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> root = test1.render()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> patchs = diff(test1, test2)</span><br><span class="line"><span class="built_in">console</span>.log(patchs)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'开始更新'</span>)</span><br><span class="line">  patch(root, patchs)</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'结束更新'</span>)</span><br><span class="line">&#125;, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+<p>diff的不足与待优化的地方</p>
+<p><img src="/images/yl2.png"><br>看图的 D，此时D不移动，但它的index是最大的，导致更新lastIndex=3，从而使得其他元素A,B,C的index&lt;lastIndex，导致A,B,C都要去移动。<br>理想情况是只移动D，不移动A,B,C。因此，在开发过程中，尽量减少类似将最后一个节点移动到列表首部的操作，当节点数量过大或更新操作过于频繁时，会影响React的渲染性能。</p>
+<h2 id="viturl-Dom实现"><a href="#viturl-Dom实现" class="headerlink" title="viturl Dom实现"></a>viturl Dom实现</h2><p>Virtual Dom实现<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建节点  </span></span><br><span class="line"><span class="comment">//实现逻辑： </span></span><br><span class="line"><span class="number">1</span> 创建一个el空节点，遍历props,添加为el属性，如果存在key属性，添加key属性到le上</span><br><span class="line"><span class="number">2</span> 判断child参数是否存在，迭代child，判断child的每项是虚拟El节点则递归创建节点方法，不是El节点肯定为Text节点，</span><br><span class="line">创建Text文本节点。 最后统一插入到el空节点下， 递归完成返回el节点</span><br><span class="line"></span><br><span class="line">&lt;ul id=<span class="string">'list'</span>&gt;</span><br><span class="line">  &lt;li <span class="class"><span class="keyword">class</span></span>=<span class="string">'item'</span>&gt;Item <span class="number">1</span>&lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">  &lt;li class='item'&gt;Item 2&lt;/</span>li&gt;</span><br><span class="line">  &lt;li <span class="class"><span class="keyword">class</span></span>=<span class="string">'item'</span>&gt;Item <span class="number">3</span>&lt;<span class="regexp">/li&gt;</span></span><br><span class="line"><span class="regexp">&lt;/u</span>l&gt;</span><br><span class="line"><span class="keyword">var</span> ul = el(<span class="string">'ul'</span>, &#123;<span class="attr">id</span>: ‘list’,<span class="attr">class</span>:’list<span class="string">'&#125;, [</span></span><br><span class="line"><span class="string">  el('</span>li<span class="string">', &#123;class: '</span>item<span class="string">'&#125;, ['</span>Item <span class="number">1</span><span class="string">']),</span></span><br><span class="line"><span class="string">  el('</span>li<span class="string">', &#123;class: '</span>item<span class="string">'&#125;, ['</span>Item <span class="number">2</span><span class="string">']),</span></span><br><span class="line"><span class="string">  el('</span>li<span class="string">', &#123;class: '</span>item<span class="string">'&#125;, ['</span>Item <span class="number">3</span><span class="string">'])</span></span><br><span class="line"><span class="string">],'</span>key<span class="string">')</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">export default class Element &#123;</span></span><br><span class="line"><span class="string">   /**</span></span><br><span class="line"><span class="string">   * @param &#123;String&#125; tag '</span>div<span class="string">'</span></span><br><span class="line"><span class="string">   * @param &#123;Object&#125; props &#123; class: '</span>item<span class="string">' &#125;</span></span><br><span class="line"><span class="string">   * @param &#123;Array&#125; children [ Element1, '</span>text<span class="string">']</span></span><br><span class="line"><span class="string">   * @param &#123;String&#125; key option</span></span><br><span class="line"><span class="string">   */</span></span><br><span class="line"><span class="string">    constructor(tag, props, children, key)&#123; </span></span><br><span class="line"><span class="string">        this.tag = tag</span></span><br><span class="line"><span class="string">        this.props = props</span></span><br><span class="line"><span class="string">        if(Array.isArray(children))&#123; </span></span><br><span class="line"><span class="string">            this.children = children</span></span><br><span class="line"><span class="string">        &#125;else if(isString(children))&#123; </span></span><br><span class="line"><span class="string">            this.key = children</span></span><br><span class="line"><span class="string">            this.children = null</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        if(key) this.key = key</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    render()&#123; </span></span><br><span class="line"><span class="string">        let root = this._createElement( </span></span><br><span class="line"><span class="string">            this.tag,</span></span><br><span class="line"><span class="string">            this.props,</span></span><br><span class="line"><span class="string">            this.children,</span></span><br><span class="line"><span class="string">            this.key</span></span><br><span class="line"><span class="string">        )</span></span><br><span class="line"><span class="string">        document.body.appendChild(root)</span></span><br><span class="line"><span class="string">        return root</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    create()&#123; </span></span><br><span class="line"><span class="string">        return this._createElement(this.tag,this.props,this.children,this.key)</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">    //创建节点  </span></span><br><span class="line"><span class="string">     //实现逻辑： </span></span><br><span class="line"><span class="string">        1 创建一个el空节点，遍历props,添加为el属性，如果存在key属性，添加key属性到le上</span></span><br><span class="line"><span class="string">        2 判断child参数是否存在，迭代child，判断child的每项是虚拟El节点则递归创建节点方法，不是El节点肯定为Text节点，</span></span><br><span class="line"><span class="string">          创建Text文本节点。 最后统一插入到el空节点下， 递归完成返回el节点</span></span><br><span class="line"><span class="string">    _createElement(tag,props,child,key)&#123; </span></span><br><span class="line"><span class="string">        let el = document.createElement(el);</span></span><br><span class="line"><span class="string">        for(let key in props)&#123; </span></span><br><span class="line"><span class="string">            value = props[key];   </span></span><br><span class="line"><span class="string">            el.setAttribute(key,value)</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        if(key)&#123; </span></span><br><span class="line"><span class="string">            el.setAttribute(‘key’,key)</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        if(child)&#123; </span></span><br><span class="line"><span class="string">            child.foreach(elem=&gt;&#123; </span></span><br><span class="line"><span class="string">                if(elem instanceOf Element)&#123; </span></span><br><span class="line"><span class="string">                    let els = _createElement(elem.tag,elem.props,elem.child,elem.key)</span></span><br><span class="line"><span class="string">                &#125;else&#123; </span></span><br><span class="line"><span class="string">                    let els = document.createTextNode(textNode)</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">                el.appendChild(els)</span></span><br><span class="line"><span class="string">            &#125;)</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        return el;</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Vue-router路由原理"><a href="#Vue-router路由原理" class="headerlink" title="Vue-router路由原理"></a>Vue-router路由原理</h2><p>目前在浏览器环境中这一功能的实现主要有两种方式：</p>
+<h3 id="利用URL中的hash（“-”）-HashHistory"><a href="#利用URL中的hash（“-”）-HashHistory" class="headerlink" title="利用URL中的hash（“#”） HashHistory"></a>利用URL中的hash（“#”） HashHistory</h3><p>特点：   </p>
+<ul>
+<li>hash虽然出现在URL中，但不会被包括在HTTP请求中。它是用来指导浏览器动作的，对服务器端完全无用，因此，改变hash不会重新加载页面</li>
+<li>可以为hash的改变添加监听事件： window.addEventListener(“hashchange”, funcRef, false)</li>
+<li>每一次改变hash（window.location.hash），都会在浏览器的访问历史中增加一个记录</li>
+</ul>
+<p>HashHistory中的push()方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">push (location: RawLocation, onComplete?: <span class="built_in">Function</span>, onAbort?: <span class="built_in">Function</span>) &#123;</span><br><span class="line">  <span class="keyword">this</span>.transitionTo(location, route =&gt; &#123;</span><br><span class="line">    pushHash(route.fullPath)</span><br><span class="line">    onComplete &amp;&amp; onComplete(route)</span><br><span class="line">  &#125;, onAbort)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pushHash</span> (<span class="params">path</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">window</span>.location.hash = path</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>transitionTo()方法是父类中定义的是用来处理路由变化中的基础逻辑的，push()方法最主要的是对window的hash进行了直接赋值HashHistory.replace()</p>
+<pre><code>* replace()方法与push()方法不同之处在于，它并不是将新路由添加到浏览器访问历史的栈顶，而是替换掉当前的路由：
+</code></pre><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">replace (location: RawLocation, onComplete?: <span class="built_in">Function</span>, onAbort?: <span class="built_in">Function</span>) &#123;</span><br><span class="line">  <span class="keyword">this</span>.transitionTo(location, route =&gt; &#123;</span><br><span class="line">    replaceHash(route.fullPath)</span><br><span class="line">    onComplete &amp;&amp; onComplete(route)</span><br><span class="line">  &#125;, onAbort)</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">replaceHash</span> (<span class="params">path</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> i = <span class="built_in">window</span>.location.href.indexOf(<span class="string">'#'</span>)</span><br><span class="line">  <span class="built_in">window</span>.location.replace(</span><br><span class="line">    <span class="built_in">window</span>.location.href.slice(<span class="number">0</span>, i &gt;= <span class="number">0</span> ? i : <span class="number">0</span>) + <span class="string">'#'</span> + path</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="利用History-interface在-HTML5中新增的方法-HTML5History"><a href="#利用History-interface在-HTML5中新增的方法-HTML5History" class="headerlink" title="利用History interface在 HTML5中新增的方法 HTML5History"></a>利用History interface在 HTML5中新增的方法 HTML5History</h3><p>pushState(), replaceState()使得我们可以对浏览器历史记录栈进行修改：</p>
+<p>两者优劣</p>
+<p>调用history.pushState()相比于直接修改hash主要有以下优势：</p>
+<ul>
+<li>pushState设置的新URL可以是与当前URL同源的任意URL；而hash只可修改#后面的部分，故只可设置与当前同文档的URL</li>
+<li>pushState设置的新URL可以与当前URL一模一样，这样也会把记录添加到栈中；而hash设置的新值必须与原来不一样才会触发记录添加到栈中</li>
+<li>pushState通过stateObject可以添加任意类型的数据到记录中；而hash只可添加短字符串</li>
+<li>pushState可额外设置title属性供后续使用</li>
+</ul>
+<p>history模式的一个问题</p>
+<p>比如用户直接在地址栏中输入并回车，浏览器重启重新加载应用等。<br>hash模式仅改变hash部分的内容，而hash部分是不会包含在HTTP请求中的：</p>
+<p><code>http://oursite.com/#/user/id   // 如重新请求只会发送http://oursite.com/</code></p>
+<p>故在hash模式下遇到根据URL请求页面的情况不会有问题。而history模式则会将URL修改得就和正常请求后端的URL一样</p>
+<p><code>http://oursite.com/user/id</code></p>
+<p>解决：<br>在 Vue 应用里面覆盖所有的路由情况，然后在给出一个 404 页面。或者，如果是用 Node.js 作后台，可以使用服务端的路由来匹配 URL，当没有匹配到路由的时候返回 404，从而实现 fallback。<br>react使用一个叫做connect-history-api-fallback 中间件解决</p>
+<h2 id="小程序的实现原理是什么？"><a href="#小程序的实现原理是什么？" class="headerlink" title="小程序的实现原理是什么？"></a>小程序的实现原理是什么？</h2><p>小程序架构 <a href="http://www.bubuko.com/infodetail-1906089.html" target="_blank" rel="noopener">http://www.bubuko.com/infodetail-1906089.html</a><br><img src="/images/yl1.png"></p>
+<h2 id="generator-原理"><a href="#generator-原理" class="headerlink" title="generator 原理"></a>generator 原理</h2><p>Generator 是 ES6中新增的语法，和 Promise 一样，都可以用来异步编程</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用 * 表示这是一个 Generator 函数</span></span><br><span class="line"><span class="comment">// 内部可以通过 yield 暂停代码</span></span><br><span class="line"><span class="comment">// 通过调用 next 恢复执行</span></span><br><span class="line"><span class="function"><span class="keyword">function</span>* <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> a = <span class="number">1</span> + <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">2</span>;</span><br><span class="line">  <span class="keyword">yield</span> <span class="number">3</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> b = test();</span><br><span class="line"><span class="built_in">console</span>.log(b.next()); <span class="comment">// &gt;  &#123; value: 2, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b.next()); <span class="comment">// &gt;  &#123; value: 3, done: false &#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(b.next()); <span class="comment">// &gt;  &#123; value: undefined, done: true &#125;</span></span><br><span class="line">从以上代码可以发现，加上 *的函数执行后拥有了 next 函数，也就是说函数执行后返回了一个对象。每次调用 next 函数可以继续执行被暂停的代码。以下是 Generator 函数的简单实现</span><br><span class="line"><span class="comment">// cb 也就是编译过的 test 函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">generator</span>(<span class="params">cb</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> object = &#123;</span><br><span class="line">      next: <span class="number">0</span>,</span><br><span class="line">      stop: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      next: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> ret = cb(object);</span><br><span class="line">        <span class="keyword">if</span> (ret === <span class="literal">undefined</span>) <span class="keyword">return</span> &#123; <span class="attr">value</span>: <span class="literal">undefined</span>, <span class="attr">done</span>: <span class="literal">true</span> &#125;;</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">          value: ret,</span><br><span class="line">          done: <span class="literal">false</span></span><br><span class="line">        &#125;;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;)();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 如果你使用 babel 编译后可以发现 test 函数变成了这样</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a;</span><br><span class="line">  <span class="keyword">return</span> generator(<span class="function"><span class="keyword">function</span>(<span class="params">_context</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">switch</span> ((_context.prev = _context.next)) &#123;</span><br><span class="line">        <span class="comment">// 可以发现通过 yield 将代码分割成几块</span></span><br><span class="line">        <span class="comment">// 每次执行 next 函数就执行一块代码</span></span><br><span class="line">        <span class="comment">// 并且表明下次需要执行哪块代码</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">          a = <span class="number">1</span> + <span class="number">2</span>;</span><br><span class="line">          _context.next = <span class="number">4</span>;</span><br><span class="line">          <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">          _context.next = <span class="number">6</span>;</span><br><span class="line">          <span class="keyword">return</span> <span class="number">3</span>;</span><br><span class="line">                <span class="comment">// 执行完毕</span></span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">"end"</span>:</span><br><span class="line">          <span class="keyword">return</span> _context.stop();</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/原理/" rel="tag"># 原理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/02/fe-engineering/" rel="next" title="前端工程化包含哪些内容？">
+                <i class="fa fa-chevron-left"></i> 前端工程化包含哪些内容？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">卡牌大叔</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/tedQB" title="GitHub &rarr; https://github.com/tedQB" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/u/5462608131" title="Weibo &rarr; https://weibo.com/u/5462608131" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://twitter.com/kapaidashu" title="Twitter &rarr; https://twitter.com/kapaidashu" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#reactNative-原理"><span class="nav-number">1.</span> <span class="nav-text">reactNative 原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#babel-原理，抽象语法树如何产生？"><span class="nav-number">2.</span> <span class="nav-text">babel 原理，抽象语法树如何产生？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#webpack-原理"><span class="nav-number">3.</span> <span class="nav-text">webpack 原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DIFF-算法实现-原理"><span class="nav-number">4.</span> <span class="nav-text">DIFF 算法实现 原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#viturl-Dom实现"><span class="nav-number">5.</span> <span class="nav-text">viturl Dom实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue-router路由原理"><span class="nav-number">6.</span> <span class="nav-text">Vue-router路由原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#利用URL中的hash（“-”）-HashHistory"><span class="nav-number">6.1.</span> <span class="nav-text">利用URL中的hash（“#”） HashHistory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用History-interface在-HTML5中新增的方法-HTML5History"><span class="nav-number">6.2.</span> <span class="nav-text">利用History interface在 HTML5中新增的方法 HTML5History</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小程序的实现原理是什么？"><span class="nav-number">7.</span> <span class="nav-text">小程序的实现原理是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generator-原理"><span class="nav-number">8.</span> <span class="nav-text">generator 原理</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">卡牌大叔</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v7.0.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.0"></script>
+
+  <script src="/js/src/motion.js?v=7.0.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=7.0.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.0"></script>
+<script src="/js/src/post-details.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=7.0.0"></script>
+
+
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

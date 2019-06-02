@@ -100,18 +100,18 @@
 
 
 
-  <meta name="description" content="如何在react框架下实现一个hashrouterlink12345678910111213141516&amp;lt;HashRouter&amp;gt;  //错误 HashRouter不能包含多个Route子节点    &amp;lt;Route path=&quot;/about&quot;&amp;gt;&amp;lt;/Route&amp;gt;    &amp;lt;Route path=&quot;/topic&quot;&amp;gt;&amp;lt;/Route&amp;gt;&amp;lt;/Hash">
+  <meta name="description" content="React Link NavLink使用 redux-devtools-extension  会踩到action无法派发的坑， const composeEnhancers = window.REDUX_DEVTOOLS_EXTENSION_COMPOSE || compose; import {  createStore,compose }  from  ‘redux’; const stroe">
 <meta name="keywords" content="前端框架">
 <meta property="og:type" content="article">
 <meta property="og:title" content="react笔记">
 <meta property="og:url" content="http://yoursite.com/2018/10/14/reactnote/index.html">
 <meta property="og:site_name" content="卡牌大叔的博客">
-<meta property="og:description" content="如何在react框架下实现一个hashrouterlink12345678910111213141516&amp;lt;HashRouter&amp;gt;  //错误 HashRouter不能包含多个Route子节点    &amp;lt;Route path=&quot;/about&quot;&amp;gt;&amp;lt;/Route&amp;gt;    &amp;lt;Route path=&quot;/topic&quot;&amp;gt;&amp;lt;/Route&amp;gt;&amp;lt;/Hash">
+<meta property="og:description" content="React Link NavLink使用 redux-devtools-extension  会踩到action无法派发的坑， const composeEnhancers = window.REDUX_DEVTOOLS_EXTENSION_COMPOSE || compose; import {  createStore,compose }  from  ‘redux’; const stroe">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-02-13T17:27:34.252Z">
+<meta property="og:updated_time" content="2019-06-02T15:26:47.238Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react笔记">
-<meta name="twitter:description" content="如何在react框架下实现一个hashrouterlink12345678910111213141516&amp;lt;HashRouter&amp;gt;  //错误 HashRouter不能包含多个Route子节点    &amp;lt;Route path=&quot;/about&quot;&amp;gt;&amp;lt;/Route&amp;gt;    &amp;lt;Route path=&quot;/topic&quot;&amp;gt;&amp;lt;/Route&amp;gt;&amp;lt;/Hash">
+<meta name="twitter:description" content="React Link NavLink使用 redux-devtools-extension  会踩到action无法派发的坑， const composeEnhancers = window.REDUX_DEVTOOLS_EXTENSION_COMPOSE || compose; import {  createStore,compose }  from  ‘redux’; const stroe">
 
 
 
@@ -355,7 +355,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-02-14 01:27:34" itemprop="dateModified" datetime="2019-02-14T01:27:34+08:00">2019-02-14</time>
+                <time title="Modified: 2019-06-02 23:26:47" itemprop="dateModified" datetime="2019-06-02T23:26:47+08:00">2019-06-02</time>
               
             
           </span>
@@ -389,7 +389,12 @@
       
 
       
-        <h2 id="如何在react框架下实现一个hashrouter"><a href="#如何在react框架下实现一个hashrouter" class="headerlink" title="如何在react框架下实现一个hashrouter"></a>如何在react框架下实现一个hashrouter</h2><p><a href="https://segmentfault.com/a/1190000014313428" target="_blank" rel="noopener">link</a><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">HashRouter</span>&gt;</span>  //错误 HashRouter不能包含多个Route子节点</span><br><span class="line">    <span class="tag">&lt;<span class="name">Route</span> <span class="attr">path</span>=<span class="string">"/about"</span>&gt;</span><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Route</span> <span class="attr">path</span>=<span class="string">"/topic"</span>&gt;</span><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">HashRouter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">Router</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">Route</span> <span class="attr">exact</span> <span class="attr">path</span>=<span class="string">"/"</span> <span class="attr">component</span>=<span class="string">&#123;Home&#125;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Route</span> <span class="attr">path</span>=<span class="string">"/about"</span> <span class="attr">component</span>=<span class="string">&#123;About&#125;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Router</span>&gt;</span></span><br><span class="line">function Home() &#123;</span><br><span class="line">  return (</span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Home<span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">&#123;...&#125;</span>&gt;</span>&#123;l&#125;<span class="tag">&lt;/<span class="name">Link</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <h2 id="React-Link-NavLink"><a href="#React-Link-NavLink" class="headerlink" title="React Link NavLink"></a>React Link NavLink</h2><p>使用 redux-devtools-extension  会踩到action无法派发的坑，</p>
+<p>const composeEnhancers = window.<strong>REDUX_DEVTOOLS_EXTENSION_COMPOSE</strong> || compose;</p>
+<p>import {  createStore,compose }  from  ‘redux’;</p>
+<p>const stroe =createStore(reducer,composeEnhancers());</p>
+<p><a href="https://blog.csdn.net/weixin_39939012/article/details/83578289" target="_blank" rel="noopener">link</a></p>
+<h2 id="如何在react框架下实现一个hashrouter"><a href="#如何在react框架下实现一个hashrouter" class="headerlink" title="如何在react框架下实现一个hashrouter"></a>如何在react框架下实现一个hashrouter</h2><p><a href="https://segmentfault.com/a/1190000014313428" target="_blank" rel="noopener">link</a><br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">HashRouter</span>&gt;</span>  //错误 HashRouter不能包含多个Route子节点</span><br><span class="line">    <span class="tag">&lt;<span class="name">Route</span> <span class="attr">path</span>=<span class="string">"/about"</span>&gt;</span><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Route</span> <span class="attr">path</span>=<span class="string">"/topic"</span>&gt;</span><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">HashRouter</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">Router</span>&gt;</span> </span><br><span class="line">        <span class="tag">&lt;<span class="name">Route</span> <span class="attr">exact</span> <span class="attr">path</span>=<span class="string">"/"</span> <span class="attr">component</span>=<span class="string">&#123;Home&#125;</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Route</span> <span class="attr">path</span>=<span class="string">"/about"</span> <span class="attr">component</span>=<span class="string">&#123;About&#125;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">Router</span>&gt;</span></span><br><span class="line">function Home() &#123;</span><br><span class="line">  return (</span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Home<span class="tag">&lt;<span class="name">Link</span> <span class="attr">to</span>=<span class="string">&#123;...&#125;</span>&gt;</span>&#123;l&#125;<span class="tag">&lt;/<span class="name">Link</span>&gt;</span><span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <hr>
 <h2 id="react-router4-0-简单介绍"><a href="#react-router4-0-简单介绍" class="headerlink" title="react-router4.0 简单介绍"></a>react-router4.0 简单介绍</h2><p>已经不需要配置路由，一切皆组件。</p>
 <ul>
@@ -465,8 +470,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/20/nodejs/" rel="prev" title="nodejs中间件笔记">
-                nodejs中间件笔记 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/02/webpackbabel/" rel="prev" title="webpack/babel笔记">
+                webpack/babel笔记 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -537,7 +542,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -558,7 +563,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">tags</span>
                   
                 </div>
@@ -638,7 +647,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何在react框架下实现一个hashrouter"><span class="nav-number">1.</span> <span class="nav-text">如何在react框架下实现一个hashrouter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react-router4-0-简单介绍"><span class="nav-number">2.</span> <span class="nav-text">react-router4.0 简单介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsx如何注释？"><span class="nav-number">3.</span> <span class="nav-text">jsx如何注释？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ant-Desigin的-一些优化方案-link"><span class="nav-number">4.</span> <span class="nav-text">ant Desigin的 一些优化方案 link</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初识React"><span class="nav-number">5.</span> <span class="nav-text">初识React</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#React-Link-NavLink"><span class="nav-number">1.</span> <span class="nav-text">React Link NavLink</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何在react框架下实现一个hashrouter"><span class="nav-number">2.</span> <span class="nav-text">如何在react框架下实现一个hashrouter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#react-router4-0-简单介绍"><span class="nav-number">3.</span> <span class="nav-text">react-router4.0 简单介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsx如何注释？"><span class="nav-number">4.</span> <span class="nav-text">jsx如何注释？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ant-Desigin的-一些优化方案-link"><span class="nav-number">5.</span> <span class="nav-text">ant Desigin的 一些优化方案 link</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初识React"><span class="nav-number">6.</span> <span class="nav-text">初识React</span></a></li></ol></div>
             
 
           </div>
