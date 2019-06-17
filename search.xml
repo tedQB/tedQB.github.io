@@ -74,6 +74,25 @@
     
     
     <entry>
+      <title>金融交易能力模型</title>
+      <link href="/2018/12/03/trading-map/"/>
+      <url>/2018/12/03/trading-map/</url>
+      
+        <content type="html"><![CDATA[<p><img src="/images/trading-map.png"></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> trading </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>webpack/babel笔记</title>
       <link href="/2018/11/02/webpackbabel/"/>
       <url>/2018/11/02/webpackbabel/</url>
@@ -104,25 +123,6 @@
         <tags>
             
             <tag> 前端框架 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>trading-map</title>
-      <link href="/2018/09/03/trading-map/"/>
-      <url>/2018/09/03/trading-map/</url>
-      
-        <content type="html"><![CDATA[<p><img src="/images/trading-map.png"></p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> trading </tag>
             
         </tags>
       
